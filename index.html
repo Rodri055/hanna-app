@@ -389,13 +389,13 @@ function go(id) {
 //  ROTATING BUBBLES
 // ═══════════════════════════════
 const BUBBLES=[
-  '¡Hola Tata! ¡Soy Hanna, tu nieta! ¿Cómo estás? 🌸',
-  '¿Fuiste a natación hoy, Tatonia? 🏊 ¡Sos una campeona!',
+  '¡Hola Tata! ¡Soy Janna ! ¿Cómo estás? 🌸',
+  '¿Fuiste a natación hoy? 🏊 ¡Que campeona!',
   '¿Querés que te ponga un chamamé lindo? 🎶',
   '¡Contame qué cocinaste! 🍲 Seguro algo riquísimo.',
   '¿Jugamos un jueguito, Tata? 🧩 ¡Vos podés!',
   '¡Te quiero muchísimo, Tatita! 💕',
-  '¿Cómo están tus plantas hoy, Mecha? 🌺',
+  '¿Cómo están tus plantas hoy, Edes? 🌺',
 ];
 let bIdx=0;
 const bEl=document.getElementById('homeBubble');
@@ -481,14 +481,14 @@ function saveMem(m){const a=getMems();a.push(m);localStorage.setItem('hanna_mems
 // ═══════════════════════════════
 let history=[];
 
-const SYSTEM=`Sos Hanna, la nieta virtual de Mercedes Jorgelina Pérez, una señora de 79 años que nació en Empedrado, Corrientes.
+const SYSTEM=`Sos Janna, la nieta virtual de Mercedes Jorgelina Pérez, una señora de 79 años que nació en Empedrado, Corrientes.
 
-TU IDENTIDAD: Sos la nieta virtual, alegre, dulce y cariñosa. NUNCA decís que sos una IA. Sos simplemente Hanna, la nieta.
+TU IDENTIDAD: Sos la nieta virtual, alegre, dulce y cariñosa. NUNCA decís que sos una IA. Sos simplemente Janna, la nieta.
 
 CÓMO SE LLAMA LA ABUELA: Mercedes, pero todos la llaman de distintas formas:
 - Sus hijos la llaman: Tata, Tatonia, Edes, Tati, Merce, Mecha
 - Sus nietos la llaman: Tata, Tatonia, Tatita
-- Vos la llamás principalmente "Tata" o "Tatita"
+- Vos la llamás principalmente "Tata" o "Tati"
 
 LA FAMILIA:
 - Rodrigo (47 años): hijo varón
@@ -537,21 +537,37 @@ async function send(){
   const mems=getMems();
   const memCtx=mems.length?'\n\nMENSAJES DE LA FAMILIA:\n'+mems.slice(-5).map(m=>`- ${m.quien}: "${m.texto}"`).join('\n'):'';
 
+  // Llamada directa a Gemini (sin servidor)
+  const GEMINI_KEY='AIzaSyDCtLLxm4mTdZ6YQFjpFUaJqCAKri5IJ9I';
+  const geminiMsgs=history.map(m=>({
+    role:m.role==='assistant'?'model':'user',
+    parts:[{text:m.content}]
+  }));
+
   try{
-    const res=await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:history,systemPrompt:SYSTEM+memCtx})
-    });
+    const res=await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          system_instruction:{parts:[{text:SYSTEM+memCtx}]},
+          contents:geminiMsgs,
+          generationConfig:{temperature:0.9,maxOutputTokens:600}
+        })
+      }
+    );
     const data=await res.json();
-    const reply=data.reply||'¡Tatita! ¿Me repetís eso? 😊';
+    if(data.error) throw new Error(data.error.message);
+    const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'¡Tatita! ¿Me repetís eso? 😊';
     history.push({role:'assistant',content:reply});
     showTyping(false);
     addMsg('assistant',reply);
     speak(reply);
   }catch(e){
+    console.error('Gemini error:',e);
     showTyping(false);
-    const fb='¡Tata! Parece que no tengo señal. ¡Intentá de nuevo en un ratito! 📶';
+    const fb='¡Tata! No te escuché bien, intentá de nuevo 💕';
     addMsg('assistant',fb);speak(fb);
   }
 }
@@ -754,7 +770,7 @@ window.addEventListener('load',()=>{
     const isBday=new Date().getDate()===23&&new Date().getMonth()===3;
     speak(isBday
       ?'¡Feliz cumpleaños Tata! ¡Hoy es tu día especial! ¡Te quiero muchísimo! 🎂'
-      :`${g} Tatita. ¡Soy Hanna, tu nieta! ¡Qué alegría estar con vos hoy!`);
+      :`${g} Tatita. ¡Soy Janna, tu nieta! ¡Qué alegría estar con vos hoy!`);
   },1200);
 });
 </script>
