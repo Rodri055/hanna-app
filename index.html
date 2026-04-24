@@ -389,8 +389,8 @@ function go(id) {
 //  ROTATING BUBBLES
 // ═══════════════════════════════
 const BUBBLES=[
-  '¡Hola Tata! ¡Soy Hanna, tu nieta! ¿Cómo estás? 🌸',
-  '¿Fuiste a natación hoy, Tatonia? 🏊 ¡Sos una campeona!',
+  '¡Hola Tata! ¡Soy Janna!, ¿Cómo estás? 🌸',
+  '¿Fuiste a natación hoy 🏊 ¡Sos una campeona!',
   '¿Querés que te ponga un chamamé lindo? 🎶',
   '¡Contame qué cocinaste! 🍲 Seguro algo riquísimo.',
   '¿Jugamos un jueguito, Tata? 🧩 ¡Vos podés!',
@@ -538,7 +538,7 @@ async function send(){
   const memCtx=mems.length?'\n\nMENSAJES DE LA FAMILIA:\n'+mems.slice(-5).map(m=>`- ${m.quien}: "${m.texto}"`).join('\n'):'';
 
   // Llamada directa a Gemini (sin servidor)
-  const GEMINI_KEY='AIzaSyDCtLLxm4mTdZ6YQFjpFUaJqCAKri5IJ9I';
+  const GEMINI_KEY='AIzaSyBrkAeBrM8Zzoc_xptDdhSBT0BiXwOg5so';
   const geminiMsgs=history.map(m=>({
     role:m.role==='assistant'?'model':'user',
     parts:[{text:m.content}]
