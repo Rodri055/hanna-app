@@ -3,329 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Hanna — La nieta de Mercedes</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="theme-color" content="#C06840">
+<link rel="manifest" href="/manifest.json">
+<title>Hanna 💕</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --cream: #FDF8F0;
-  --warm: #F2E8D9;
-  --rose: #E8956D;
-  --rose-soft: #F5C4A8;
-  --rose-deep: #C06840;
-  --teal: #4A9B8E;
-  --teal-light: #9FD4CC;
-  --gold: #D4A043;
-  --gold-light: #F0D08A;
-  --green: #5A9E6A;
-  --panic: #D63B2F;
-  --panic-dark: #A02820;
-  --text: #2E2418;
-  --text-soft: #7A6A55;
-  --white: #FFFFFF;
-  --shadow: rgba(46,36,24,0.13);
+:root{
+  --cream:#FDF8F0;--warm:#F2E8D9;--rose:#E8956D;--rose-soft:#F5C4A8;
+  --rose-deep:#C06840;--teal:#4A9B8E;--teal-light:#9FD4CC;--gold:#D4A043;
+  --green:#5A9E6A;--panic:#D63B2F;--panic-dark:#A02820;
+  --text:#2E2418;--text-soft:#7A6A55;--white:#FFFFFF;--shadow:rgba(46,36,24,0.13);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{
-  font-family:'Nunito',sans-serif;
-  background:var(--cream);
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
-}
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background:
-    radial-gradient(ellipse 70% 50% at 0% 0%,#F5C4A822,transparent 60%),
-    radial-gradient(ellipse 60% 40% at 100% 100%,#9FD4CC22,transparent 60%),
-    radial-gradient(ellipse 40% 40% at 50% 50%,#F0D08A11,transparent 70%);
-  pointer-events:none;z-index:0;
-}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 0% 0%,#F5C4A822,transparent 60%),radial-gradient(ellipse 60% 40% at 100% 100%,#9FD4CC22,transparent 60%);pointer-events:none;z-index:0}
 
-/* ─── SCREENS ─── */
 .screen{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1}
 .screen.active{display:flex}
 
-/* ══════════════════ HOME ══════════════════ */
-#home{align-items:center;padding:16px 16px 28px;gap:0}
+/* ══ HOME ══ */
+#home{align-items:center;padding:16px 16px 28px}
+.top-bar{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.date-pill{background:var(--warm);border-radius:50px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--text-soft)}
+.bday-pill{background:linear-gradient(135deg,var(--gold),#B07818);border-radius:50px;padding:6px 14px;font-size:13px;font-weight:800;color:white;display:none;animation:glow 1.5s infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 8px #D4A04380}50%{box-shadow:0 0 22px #D4A043CC}}
+.greeting{font-family:'Lora',serif;font-size:17px;color:var(--text-soft);font-style:italic;margin-bottom:2px;text-align:center}
+.grandma{font-size:clamp(32px,10vw,50px);font-weight:900;color:var(--rose-deep);letter-spacing:-1px;line-height:1;margin-bottom:2px;text-align:center}
 
-.top-bar{
-  width:100%;display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:8px;
-}
-.date-pill{
-  background:var(--warm);
-  border-radius:50px;
-  padding:6px 14px;
-  font-size:13px;
-  font-weight:700;
-  color:var(--text-soft);
-}
-.birthday-pill{
-  background:linear-gradient(135deg,var(--gold),#C08020);
-  border-radius:50px;
-  padding:6px 14px;
-  font-size:13px;
-  font-weight:800;
-  color:white;
-  animation:birthday-glow 1.5s ease-in-out infinite;
-  display:none;
-}
-@keyframes birthday-glow{0%,100%{box-shadow:0 0 8px #D4A04380}50%{box-shadow:0 0 20px #D4A043CC}}
-
-.greeting{
-  font-family:'Lora',serif;
-  font-size:clamp(15px,4vw,19px);
-  color:var(--text-soft);
-  font-style:italic;
-  margin-bottom:2px;
-  text-align:center;
-}
-.grandma-name{
-  font-size:clamp(34px,10vw,52px);
-  font-weight:900;
-  color:var(--rose-deep);
-  letter-spacing:-1px;
-  line-height:1;
-  margin-bottom:2px;
-  text-align:center;
-}
-
-/* ─── HANNA AVATAR ─── */
-.hanna-wrap{
-  position:relative;width:150px;height:150px;
-  margin:14px auto 10px;cursor:pointer;
-}
-.ring{
-  position:absolute;border-radius:50%;
-  border:2px solid var(--rose-soft);
-  opacity:0.4;
-  animation:pulse-ring 3s ease-in-out infinite;
-}
-.ring:nth-child(1){inset:-16px;animation-delay:0s}
-.ring:nth-child(2){inset:-30px;opacity:0.2;animation-delay:1s}
-@keyframes pulse-ring{0%,100%{transform:scale(1);opacity:0.4}50%{transform:scale(1.04);opacity:0.1}}
-.hanna-face{
-  position:absolute;inset:0;
-  background:linear-gradient(145deg,#F9DDD0,#EAA585,#C97055);
-  border-radius:50%;
-  box-shadow:0 8px 28px var(--shadow),inset 0 -4px 12px rgba(0,0,0,0.08);
-  display:flex;align-items:center;justify-content:center;
-  font-size:74px;
-  animation:breathe 5s ease-in-out infinite;
-  transition:transform 0.15s;
-}
-.hanna-face:active{transform:scale(0.95)}
+/* ══ AVATAR ══ */
+.av-wrap{position:relative;width:148px;height:148px;margin:12px auto 8px;cursor:pointer}
+.ring{position:absolute;border-radius:50%;border:2px solid var(--rose-soft);animation:pring 3s ease-in-out infinite}
+.ring:nth-child(1){inset:-14px;opacity:.4}
+.ring:nth-child(2){inset:-28px;opacity:.18;animation-delay:1s}
+@keyframes pring{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.av-face{position:absolute;inset:0;background:linear-gradient(145deg,#F9DDD0,#EAA585,#C97055);border-radius:50%;box-shadow:0 8px 28px var(--shadow);display:flex;align-items:center;justify-content:center;font-size:72px;animation:breathe 5s ease-in-out infinite;transition:transform .15s}
+.av-face:active{transform:scale(.95)}
 @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
-.online-dot{
-  position:absolute;bottom:8px;right:8px;
-  width:20px;height:20px;
-  background:#4CAF50;border-radius:50%;
-  border:3px solid var(--cream);
-  animation:blink 2s ease-in-out infinite;
-}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
-.hanna-label{
-  text-align:center;font-size:11px;font-weight:800;
-  text-transform:uppercase;letter-spacing:1.5px;
-  color:var(--text-soft);margin-bottom:10px;
-}
+.online{position:absolute;bottom:8px;right:8px;width:20px;height:20px;background:#4CAF50;border-radius:50%;border:3px solid var(--cream);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.av-label{text-align:center;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-soft);margin-bottom:10px}
 
-/* ─── BUBBLE ─── */
-.bubble{
-  background:var(--white);
-  border-radius:18px 18px 18px 4px;
-  padding:14px 18px;
-  max-width:310px;
-  box-shadow:0 4px 16px var(--shadow);
-  font-size:16px;line-height:1.55;
-  color:var(--text);
-  margin-bottom:18px;
-  transition:opacity 0.4s;
-  position:relative;
-}
-.bubble::before{
-  content:'';position:absolute;
-  top:-8px;left:22px;
-  border:8px solid transparent;
-  border-bottom-color:var(--white);border-top:0;
-}
+/* ══ BUBBLE ══ */
+.bubble{background:var(--white);border-radius:18px 18px 18px 4px;padding:14px 18px;max-width:310px;box-shadow:0 4px 16px var(--shadow);font-size:16px;line-height:1.55;margin-bottom:16px;transition:opacity .4s;position:relative}
+.bubble::before{content:'';position:absolute;top:-8px;left:22px;border:8px solid transparent;border-bottom-color:var(--white);border-top:0}
 
-/* ─── MIC BTN ─── */
-.mic-btn{
-  background:linear-gradient(135deg,var(--teal),#357A6E);
-  color:white;border:none;border-radius:50px;
-  padding:16px 32px;
-  font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;
-  cursor:pointer;
-  box-shadow:0 5px 18px rgba(74,155,142,0.4);
-  display:flex;align-items:center;gap:10px;
-  transition:transform 0.15s,box-shadow 0.15s;
-  margin-bottom:20px;
-}
-.mic-btn:active{transform:scale(0.96)}
-.mic-btn.listening{
-  background:linear-gradient(135deg,#D63B2F,#A02820);
-  animation:mic-pulse 1s ease-in-out infinite;
-}
-@keyframes mic-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+/* ══ MIC ══ */
+.mic-btn{background:linear-gradient(135deg,var(--teal),#357A6E);color:white;border:none;border-radius:50px;padding:15px 30px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 5px 18px rgba(74,155,142,.4);display:flex;align-items:center;gap:10px;transition:transform .15s;margin-bottom:18px}
+.mic-btn:active{transform:scale(.96)}
+.mic-btn.on{background:linear-gradient(135deg,#D63B2F,#A02820);animation:mpulse 1s infinite}
+@keyframes mpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
 
-/* ─── MENU GRID ─── */
-.menu-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:11px;width:100%;max-width:370px;margin-bottom:18px;
-}
-.menu-btn{
-  background:var(--white);border:none;border-radius:18px;
-  padding:18px 10px;cursor:pointer;
-  box-shadow:0 4px 14px var(--shadow);
-  display:flex;flex-direction:column;align-items:center;gap:7px;
-  transition:transform 0.15s;
-  color:var(--text);
-}
-.menu-btn:active{transform:scale(0.96)}
-.menu-btn .ico{font-size:34px}
-.menu-btn .lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-soft);text-align:center;line-height:1.2}
-.menu-btn.c-teal{border-top:4px solid var(--teal)}
-.menu-btn.c-rose{border-top:4px solid var(--rose)}
-.menu-btn.c-gold{border-top:4px solid var(--gold)}
-.menu-btn.c-green{border-top:4px solid var(--green)}
+/* ══ GRID ══ */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;width:100%;max-width:370px;margin-bottom:16px}
+.mbtn{background:var(--white);border:none;border-radius:18px;padding:18px 10px;cursor:pointer;box-shadow:0 4px 14px var(--shadow);display:flex;flex-direction:column;align-items:center;gap:7px;transition:transform .15s;color:var(--text)}
+.mbtn:active{transform:scale(.96)}
+.mbtn .ico{font-size:33px}
+.mbtn .lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text-soft);text-align:center;line-height:1.2}
+.mbtn.ct{border-top:4px solid var(--teal)}
+.mbtn.cr{border-top:4px solid var(--rose)}
+.mbtn.cg{border-top:4px solid var(--gold)}
+.mbtn.cgr{border-top:4px solid var(--green)}
 
-/* ─── PANIC ─── */
-.panic-btn{
-  width:100%;max-width:370px;
-  background:linear-gradient(135deg,var(--panic),var(--panic-dark));
-  color:white;border:none;border-radius:22px;
-  padding:20px;
-  font-family:'Nunito',sans-serif;font-size:19px;font-weight:900;
-  cursor:pointer;
-  box-shadow:0 8px 24px rgba(214,59,47,0.4);
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  position:relative;overflow:hidden;transition:transform 0.1s;
-}
-.panic-btn::before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(-45deg,transparent,transparent 10px,rgba(255,255,255,0.04) 10px,rgba(255,255,255,0.04) 20px);
-}
-.panic-btn:active{transform:scale(0.97)}
-.panic-ico{font-size:26px;animation:shake 1s ease-in-out infinite}
+/* ══ PANIC ══ */
+.panic-btn{width:100%;max-width:370px;background:linear-gradient(135deg,var(--panic),var(--panic-dark));color:white;border:none;border-radius:22px;padding:20px;font-family:'Nunito',sans-serif;font-size:19px;font-weight:900;cursor:pointer;box-shadow:0 8px 24px rgba(214,59,47,.4);display:flex;align-items:center;justify-content:center;gap:12px;position:relative;overflow:hidden;transition:transform .1s}
+.panic-btn::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 10px,rgba(255,255,255,.04) 10px,rgba(255,255,255,.04) 20px)}
+.panic-btn:active{transform:scale(.97)}
+.p-ico{font-size:26px;animation:shake 1s ease-in-out infinite}
 @keyframes shake{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
-.panic-sub{font-size:11px;opacity:0.85;font-weight:600;margin-top:2px}
+.p-sub{font-size:11px;opacity:.85;font-weight:600;margin-top:2px}
 
-/* ══════════════════ OVERLAYS ══════════════════ */
-.overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,0.65);z-index:200;
-  align-items:center;justify-content:center;
-  padding:20px;backdrop-filter:blur(5px);
-}
+/* ══ OVERLAY ══ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(5px)}
 .overlay.show{display:flex}
-.overlay-box{
-  background:var(--white);border-radius:28px;
-  padding:28px 22px;width:100%;max-width:340px;
-  text-align:center;
-  animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
-}
-@keyframes popIn{from{transform:scale(0.6);opacity:0}to{transform:scale(1);opacity:1}}
-.ov-ico{font-size:60px;margin-bottom:10px}
-.ov-title{font-family:'Lora',serif;font-size:24px;color:var(--panic);margin-bottom:8px}
-.ov-msg{font-size:15px;color:var(--text-soft);line-height:1.5;margin-bottom:20px}
-.contact-btn{
-  width:100%;
-  background:var(--panic);color:white;border:none;border-radius:14px;
-  padding:15px 18px;margin-bottom:10px;
-  font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;
-  text-decoration:none;
-}
-.contact-btn .cn{display:flex;flex-direction:column;text-align:left}
-.contact-btn .cr{font-size:11px;font-weight:600;opacity:0.8}
-.ov-cancel{
-  background:var(--warm);color:var(--text-soft);border:none;
-  border-radius:12px;padding:13px;width:100%;
-  font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;
-  margin-top:4px;
-}
+.ov-box{background:var(--white);border-radius:28px;padding:28px 22px;width:100%;max-width:340px;text-align:center;animation:popin .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popin{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.ov-ico{font-size:58px;margin-bottom:10px}
+.ov-title{font-family:'Lora',serif;font-size:23px;color:var(--panic);margin-bottom:8px}
+.ov-msg{font-size:15px;color:var(--text-soft);line-height:1.5;margin-bottom:18px}
+.cbtn{width:100%;background:var(--panic);color:white;border:none;border-radius:14px;padding:15px 18px;margin-bottom:10px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:space-between;text-decoration:none}
+.cbtn .cn{display:flex;flex-direction:column;text-align:left}
+.cbtn .cr{font-size:11px;font-weight:600;opacity:.8}
+.ov-cancel{background:var(--warm);color:var(--text-soft);border:none;border-radius:12px;padding:13px;width:100%;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px}
 
-/* ══════════════════ CHAT ══════════════════ */
+/* ══ CHAT ══ */
 #chat{background:var(--cream)}
-.chat-hdr{
-  background:linear-gradient(135deg,var(--rose-deep),#A05038);
-  padding:14px 18px;display:flex;align-items:center;gap:12px;
-  color:white;box-shadow:0 4px 14px var(--shadow);
-}
-.ch-av{font-size:38px}
+.chat-hdr{background:linear-gradient(135deg,var(--rose-deep),#A05038);padding:14px 18px;display:flex;align-items:center;gap:12px;color:white;box-shadow:0 4px 14px var(--shadow)}
+.ch-av{font-size:36px}
 .ch-info h2{font-size:20px;font-weight:900}
-.ch-info p{font-size:12px;opacity:0.85}
-.hdr-back{
-  background:rgba(255,255,255,0.2);border:none;color:white;
-  border-radius:50%;width:38px;height:38px;font-size:18px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  margin-left:auto;flex-shrink:0;
-}
-.messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:82%;padding:13px 17px;border-radius:18px;font-size:16px;line-height:1.5;animation:fadeUp 0.3s ease}
+.ch-info p{font-size:12px;opacity:.85}
+.hdr-back{background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:82%;padding:13px 17px;border-radius:18px;font-size:16px;line-height:1.5;animation:fadeup .3s ease}
 .msg.h{background:var(--white);border-bottom-left-radius:4px;align-self:flex-start;box-shadow:0 3px 10px var(--shadow)}
 .msg.u{background:linear-gradient(135deg,var(--teal),#357A6E);color:white;border-bottom-right-radius:4px;align-self:flex-end}
-.msg-who{font-size:11px;font-weight:800;opacity:0.55;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.5px}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg-who{font-size:11px;font-weight:800;opacity:.55;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .typing{display:none;align-self:flex-start;background:var(--white);border-radius:18px 18px 18px 4px;padding:14px 18px;box-shadow:0 3px 10px var(--shadow)}
 .dots{display:flex;gap:5px}
 .dots span{width:9px;height:9px;background:var(--rose);border-radius:50%;animation:bounce 1.2s ease-in-out infinite}
 .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
 @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
-.speaking-bar{
-  display:none;align-items:center;gap:8px;
-  font-size:13px;color:var(--rose-deep);font-weight:700;
-  padding:7px 16px;background:var(--warm);border-radius:50px;
-  margin:0 16px 8px;align-self:center;
-}
-.speaking-bar.show{display:flex}
+.speak-bar{display:none;align-items:center;gap:8px;font-size:13px;color:var(--rose-deep);font-weight:700;padding:7px 16px;background:var(--warm);border-radius:50px;margin:0 16px 8px;align-self:center}
+.speak-bar.show{display:flex}
 .wave{display:flex;gap:3px}
-.wave span{width:3px;height:12px;background:var(--rose-deep);border-radius:3px;animation:wv 0.8s ease-in-out infinite}
+.wave span{width:3px;height:12px;background:var(--rose-deep);border-radius:3px;animation:wv .8s ease-in-out infinite}
 .wave span:nth-child(2){animation-delay:.15s}.wave span:nth-child(3){animation-delay:.3s}.wave span:nth-child(4){animation-delay:.15s}
 @keyframes wv{0%,100%{height:4px}50%{height:14px}}
 .chat-foot{padding:10px 14px;background:var(--white);border-top:1px solid var(--warm);display:flex;gap:9px;align-items:center}
-.chat-in{
-  flex:1;background:var(--cream);border:2px solid var(--warm);border-radius:50px;
-  padding:12px 17px;font-family:'Nunito',sans-serif;font-size:16px;color:var(--text);outline:none;
-  transition:border-color 0.2s;
-}
+.chat-in{flex:1;background:var(--cream);border:2px solid var(--warm);border-radius:50px;padding:12px 17px;font-family:'Nunito',sans-serif;font-size:16px;color:var(--text);outline:none;transition:border-color .2s}
 .chat-in:focus{border-color:var(--rose)}
-.icon-btn{
-  background:var(--rose-deep);color:white;border:none;border-radius:50%;
-  width:46px;height:46px;font-size:20px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:transform 0.15s;flex-shrink:0;
-}
-.icon-btn:active{transform:scale(0.9)}
-.icon-btn.teal{background:var(--teal)}
-.icon-btn.listening{background:var(--panic);animation:mic-pulse 1s infinite}
+.ibtn{background:var(--rose-deep);color:white;border:none;border-radius:50%;width:46px;height:46px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;flex-shrink:0}
+.ibtn:active{transform:scale(.9)}
+.ibtn.teal{background:var(--teal)}
+.ibtn.on{background:var(--panic);animation:mpulse 1s infinite}
 
-/* ══════════════════ GAMES ══════════════════ */
-#games{padding:0}
-.sec-hdr{
-  padding:18px 18px 16px;color:white;
-  display:flex;align-items:center;gap:12px;
-}
-.sec-hdr.gold-bg{background:linear-gradient(135deg,var(--gold),#A8781A)}
-.sec-hdr.teal-bg{background:linear-gradient(135deg,var(--teal),#2E7068)}
-.sec-hdr.rose-bg{background:linear-gradient(135deg,var(--rose-deep),#903820)}
-.sec-hdr.green-bg{background:linear-gradient(135deg,var(--green),#3A7048)}
+/* ══ SECTIONS ══ */
+.sec-hdr{padding:18px;color:white;display:flex;align-items:center;gap:12px}
+.sec-hdr.gold{background:linear-gradient(135deg,var(--gold),#A8781A)}
+.sec-hdr.teal{background:linear-gradient(135deg,var(--teal),#2E7068)}
+.sec-hdr.rose{background:linear-gradient(135deg,var(--rose-deep),#903820)}
+.sec-hdr.green{background:linear-gradient(135deg,var(--green),#3A7048)}
+.sec-hdr.blue{background:linear-gradient(135deg,#4A6FA8,#2E4A80)}
 .sec-hdr-txt h2{font-size:22px;font-weight:900}
-.sec-hdr-txt p{font-size:13px;opacity:0.85}
+.sec-hdr-txt p{font-size:13px;opacity:.85}
 .sec-body{padding:18px 16px;flex:1;overflow-y:auto}
+.sec-back{background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0}
+
+/* ══ GAMES ══ */
 .game-list{display:flex;flex-direction:column;gap:12px}
-.game-card{
-  background:var(--white);border-radius:18px;padding:18px;
-  box-shadow:0 4px 14px var(--shadow);
-  display:flex;align-items:center;gap:14px;
-  cursor:pointer;transition:transform 0.15s;
-}
-.game-card:active{transform:scale(0.97)}
+.game-card{background:var(--white);border-radius:18px;padding:18px;box-shadow:0 4px 14px var(--shadow);display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .15s}
+.game-card:active{transform:scale(.97)}
 .game-card .gi{font-size:42px}
 .game-card h3{font-size:18px;font-weight:800;margin-bottom:2px}
 .game-card p{font-size:13px;color:var(--text-soft)}
@@ -333,18 +140,10 @@ body::before{
 .game-card.bg{border-left:5px solid var(--gold)}
 .game-card.br{border-left:5px solid var(--rose)}
 
-/* ══════════════════ CROSSWORD ══════════════════ */
-#crossword{padding:0}
+/* ══ CROSSWORD ══ */
 .cw-body{padding:16px;flex:1;overflow-y:auto}
 .cw-grid{display:grid;gap:3px;margin:0 auto 20px;width:fit-content}
-.cell{
-  width:42px;height:42px;
-  background:var(--white);border:2px solid var(--teal-light);border-radius:7px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:19px;font-weight:900;color:var(--text);
-  cursor:pointer;position:relative;text-transform:uppercase;
-  transition:background 0.15s;
-}
+.cell{width:42px;height:42px;background:var(--white);border:2px solid var(--teal-light);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900;color:var(--text);cursor:pointer;position:relative;text-transform:uppercase;transition:background .15s}
 .cell.blk{background:var(--text);border-color:var(--text);cursor:default}
 .cell.act{background:var(--teal-light);border-color:var(--teal)}
 .cell.ok{background:#C6F0CB;border-color:#3A9E44}
@@ -354,226 +153,138 @@ body::before{
 .clue{padding:8px 0;border-bottom:1px solid var(--warm);font-size:15px}
 .clue strong{color:var(--teal)}
 .cw-kb{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:18px}
-.kbtn{
-  background:var(--white);border:2px solid var(--warm);border-radius:9px;
-  padding:11px 2px;font-family:'Nunito',sans-serif;
-  font-size:15px;font-weight:800;cursor:pointer;color:var(--text);
-}
+.kbtn{background:var(--white);border:2px solid var(--warm);border-radius:9px;padding:11px 2px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;color:var(--text)}
 .kbtn:active{background:var(--teal-light)}
 .kdel{grid-column:span 2;font-size:13px;background:var(--warm)}
 
-/* ══════════════════ QUIZ ══════════════════ */
-#quiz{padding:0}
+/* ══ QUIZ ══ */
 .quiz-body{padding:20px 16px;flex:1;overflow-y:auto}
-.score-badge{
-  background:var(--gold);color:white;
-  border-radius:50px;padding:7px 20px;
-  font-size:16px;font-weight:900;display:inline-block;margin-bottom:18px;
-}
-.q-card{
-  background:var(--white);border-radius:22px;padding:22px;
-  box-shadow:0 5px 18px var(--shadow);margin-bottom:18px;
-}
+.score-badge{background:var(--gold);color:white;border-radius:50px;padding:7px 20px;font-size:16px;font-weight:900;display:inline-block;margin-bottom:18px}
+.q-card{background:var(--white);border-radius:22px;padding:22px;box-shadow:0 5px 18px var(--shadow);margin-bottom:18px}
 .q-card h3{font-family:'Lora',serif;font-size:20px;line-height:1.4;margin-bottom:5px}
 .q-hint{font-size:13px;color:var(--text-soft)}
 .q-opts{display:flex;flex-direction:column;gap:10px}
-.q-opt{
-  background:var(--cream);border:3px solid var(--warm);border-radius:14px;
-  padding:15px 18px;font-family:'Nunito',sans-serif;
-  font-size:17px;font-weight:700;cursor:pointer;text-align:left;
-  transition:all 0.2s;color:var(--text);
-}
-.q-opt:active{transform:scale(0.98)}
+.q-opt{background:var(--cream);border:3px solid var(--warm);border-radius:14px;padding:15px 18px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;cursor:pointer;text-align:left;transition:all .2s;color:var(--text)}
+.q-opt:active{transform:scale(.98)}
 .q-opt.ok{background:#C6F0CB;border-color:#3A9E44;color:#1A5C22}
 .q-opt.no{background:#FFD0CB;border-color:var(--panic);color:var(--panic-dark)}
 .q-opt:disabled{cursor:default}
-.next-btn{
-  display:none;width:100%;background:var(--rose-deep);color:white;border:none;
-  border-radius:14px;padding:17px;
-  font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;
-  margin-top:12px;
-}
+.next-btn{display:none;width:100%;background:var(--rose-deep);color:white;border:none;border-radius:14px;padding:17px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;margin-top:12px}
 .next-btn.show{display:block}
 
-/* ══════════════════ MUSIC ══════════════════ */
-#music{padding:0}
+/* ══ MUSIC ══ */
 .music-body{padding:18px 16px;flex:1;overflow-y:auto}
 .msearch{display:flex;gap:9px;margin-bottom:18px}
-.m-in{
-  flex:1;background:var(--white);border:2px solid var(--warm);border-radius:14px;
-  padding:13px 17px;font-family:'Nunito',sans-serif;font-size:16px;color:var(--text);outline:none;
-}
+.m-in{flex:1;background:var(--white);border:2px solid var(--warm);border-radius:14px;padding:13px 17px;font-family:'Nunito',sans-serif;font-size:16px;color:var(--text);outline:none}
 .m-sbtn{background:var(--green);color:white;border:none;border-radius:14px;padding:13px 18px;font-size:20px;cursor:pointer}
 .plist-title{font-size:14px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
 .songs{display:flex;flex-direction:column;gap:10px}
-.song{
-  background:var(--white);border-radius:15px;padding:14px 15px;
-  display:flex;align-items:center;gap:13px;
-  box-shadow:0 3px 10px var(--shadow);cursor:pointer;
-  transition:transform 0.15s;
-}
-.song:active{transform:scale(0.97)}
+.song{background:var(--white);border-radius:15px;padding:14px 15px;display:flex;align-items:center;gap:13px;box-shadow:0 3px 10px var(--shadow);cursor:pointer;transition:transform .15s}
+.song:active{transform:scale(.97)}
 .s-thumb{font-size:34px}
 .s-info .s-title{font-size:16px;font-weight:800}
 .s-info .s-art{font-size:13px;color:var(--text-soft)}
 .s-play{font-size:26px;margin-left:auto}
 
-/* ══════════════════ FAMILY PORTAL ══════════════════ */
-#portal{padding:0}
+/* ══ PORTAL ══ */
 .portal-body{padding:18px 16px;flex:1;overflow-y:auto}
-.portal-intro{
-  background:var(--white);border-radius:18px;padding:18px;
-  box-shadow:0 4px 14px var(--shadow);margin-bottom:18px;
-  font-size:15px;line-height:1.55;color:var(--text-soft);
-}
+.portal-intro{background:var(--white);border-radius:18px;padding:18px;box-shadow:0 4px 14px var(--shadow);margin-bottom:18px;font-size:15px;line-height:1.55;color:var(--text-soft)}
 .portal-intro strong{color:var(--rose-deep)}
-.mem-form{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
-.mem-form select,.mem-form textarea{
-  background:var(--white);border:2px solid var(--warm);border-radius:14px;
-  padding:13px 17px;font-family:'Nunito',sans-serif;font-size:16px;
-  color:var(--text);outline:none;
-}
-.mem-form textarea{min-height:100px;resize:none}
-.mem-form select:focus,.mem-form textarea:focus{border-color:var(--rose)}
-.save-btn{
-  background:linear-gradient(135deg,var(--rose-deep),#A04030);
-  color:white;border:none;border-radius:14px;padding:16px;
-  font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;
-}
 .mem-list{display:flex;flex-direction:column;gap:10px}
-.mem-item{
-  background:var(--white);border-radius:14px;padding:15px;
-  box-shadow:0 3px 10px var(--shadow);
-  border-left:4px solid var(--rose-soft);
-}
-.mem-who{font-size:12px;font-weight:800;color:var(--rose-deep);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
-.mem-txt{font-size:15px;line-height:1.5;color:var(--text)}
+.mem-item{background:var(--white);border-radius:14px;padding:15px;box-shadow:0 3px 10px var(--shadow);border-left:4px solid var(--rose-soft)}
+.mem-who{font-size:12px;font-weight:800;color:var(--rose-deep);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.mem-txt{font-size:15px;line-height:1.5}
 .mem-date{font-size:11px;color:var(--text-soft);margin-top:5px}
 
-/* utils */
-.sec-back{
-  background:rgba(255,255,255,0.2);border:none;color:white;
-  border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  margin-left:auto;flex-shrink:0;
-}
-.toast{
-  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  background:var(--text);color:white;border-radius:50px;
-  padding:12px 24px;font-size:15px;font-weight:700;
-  z-index:300;opacity:0;transition:opacity 0.3s;pointer-events:none;
-  white-space:nowrap;
-}
+/* ══ GEO ══ */
+.geo-body{padding:18px 16px;flex:1;overflow-y:auto}
+.geo-card{background:var(--white);border-radius:20px;padding:22px;box-shadow:0 4px 16px var(--shadow);margin-bottom:16px;text-align:center}
+.geo-card h3{font-size:18px;font-weight:800;margin-bottom:8px}
+.geo-card p{font-size:14px;color:var(--text-soft);line-height:1.5;margin-bottom:14px}
+.geo-status{font-size:15px;font-weight:700;padding:12px;border-radius:12px;margin-bottom:12px}
+.geo-status.ok{background:#C6F0CB;color:#1A5C22}
+.geo-status.warn{background:#FFE8C0;color:#8A5A00}
+.geo-status.err{background:#FFD0CB;color:var(--panic-dark)}
+.geo-btn{background:linear-gradient(135deg,#4A6FA8,#2E4A80);color:white;border:none;border-radius:14px;padding:15px 24px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;width:100%;margin-bottom:10px}
+.geo-link{display:block;background:var(--teal);color:white;border-radius:14px;padding:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;text-decoration:none;text-align:center}
+.geo-info{background:var(--cream);border-radius:12px;padding:14px;font-size:14px;line-height:1.6;color:var(--text-soft);text-align:left;margin-top:10px}
+.geo-coords{font-family:monospace;font-size:13px;background:var(--warm);padding:10px;border-radius:10px;margin-top:10px;word-break:break-all}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:white;border-radius:50px;padding:12px 24px;font-size:15px;font-weight:700;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
 </head>
 <body>
 
-<!-- ══════ HOME ══════ -->
+<!-- ══ HOME ══ -->
 <div id="home" class="screen active">
   <div class="top-bar">
-    <div class="date-pill" id="datePill">martes 21</div>
-    <div class="birthday-pill" id="bdayPill">🎂 ¡Tu cumple!</div>
+    <div class="date-pill" id="datePill"></div>
+    <div class="bday-pill" id="bdayPill">🎂 ¡Hoy es tu cumple!</div>
   </div>
+  <div class="greeting" id="greeting"></div>
+  <div class="grandma">Tata</div>
 
-  <div class="greeting" id="greeting">Buenas tardes,</div>
-  <div class="grandma-name">Mercedes</div>
-
-  <div class="hanna-wrap" onclick="goChat()">
+  <div class="av-wrap" onclick="go('chat')">
     <div class="ring"></div><div class="ring"></div>
-    <div class="hanna-face">👧<div class="online-dot"></div></div>
+    <div class="av-face">👧<div class="online"></div></div>
   </div>
-  <div class="hanna-label">🌟 Hanna — tu nieta virtual</div>
+  <div class="av-label">✨ Hanna — tu nieta virtual</div>
 
-  <div class="bubble" id="homeBubble">
-    ¡Hola Abuela Mercedes! 🌸 Soy Hanna, ¡tu nieta! ¿Cómo estás hoy?
-  </div>
+  <div class="bubble" id="homeBubble">¡Hola Tata! ¡Soy Hanna, tu nieta! ¿Cómo estás hoy? 🌸</div>
 
   <button class="mic-btn" id="homeMic" onclick="homeVoice()">
     🎙️ <span id="homeMicLbl">Hablar con Hanna</span>
   </button>
 
-  <div class="menu-grid">
-    <button class="menu-btn c-teal" onclick="go('games')">
-      <span class="ico">🧩</span><span class="lbl">Juegos de<br>Memoria</span>
-    </button>
-    <button class="menu-btn c-rose" onclick="go('quiz')">
-      <span class="ico">👨‍👩‍👧‍👦</span><span class="lbl">Quiz de<br>Mi Familia</span>
-    </button>
-    <button class="menu-btn c-gold" onclick="go('music')">
-      <span class="ico">🎵</span><span class="lbl">Mi Música<br>Favorita</span>
-    </button>
-    <button class="menu-btn c-green" onclick="go('portal')">
-      <span class="ico">💌</span><span class="lbl">Mensajes<br>de mi Familia</span>
-    </button>
+  <div class="mgrid">
+    <button class="mbtn ct" onclick="go('games')"><span class="ico">🧩</span><span class="lbl">Juegos de<br>Memoria</span></button>
+    <button class="mbtn cr" onclick="go('quiz')"><span class="ico">👨‍👩‍👧‍👦</span><span class="lbl">Quiz de<br>Mi Familia</span></button>
+    <button class="mbtn cg" onclick="go('music')"><span class="ico">🎵</span><span class="lbl">Mi Música<br>Favorita</span></button>
+    <button class="mbtn cgr" onclick="go('portal')"><span class="ico">💌</span><span class="lbl">Mensajes<br>de mi Familia</span></button>
   </div>
 
   <button class="panic-btn" onclick="showPanic()">
-    <span class="panic-ico">🆘</span>
-    <div>
-      <div>LLAMAR A MIS HIJOS</div>
-      <div class="panic-sub">Botón de Emergencia</div>
-    </div>
+    <span class="p-ico">🆘</span>
+    <div><div>LLAMAR A MIS HIJOS</div><div class="p-sub">Botón de Emergencia</div></div>
   </button>
 </div>
 
-<!-- ══════ CHAT ══════ -->
+<!-- ══ CHAT ══ -->
 <div id="chat" class="screen">
   <div class="chat-hdr">
     <div class="ch-av">👧</div>
-    <div class="ch-info">
-      <h2>Hanna</h2>
-      <p>Tu nieta virtual ✨ Siempre aquí para vos</p>
-    </div>
+    <div class="ch-info"><h2>Hanna</h2><p>Tu nieta virtual ✨ Siempre aquí para vos</p></div>
     <button class="hdr-back" onclick="go('home')">✕</button>
   </div>
-
-  <div class="messages" id="messages">
-    <div class="msg h">
-      <div class="msg-who">Hanna</div>
-      ¡Abuela! ¡Qué alegría! 🥰 Cuéntame todo. ¿Cómo estuvo tu día? ¿Fuiste a natación? ¿Hiciste tai chi?
-    </div>
+  <div class="msgs" id="msgs">
+    <div class="msg h"><div class="msg-who">Hanna</div>¡Tata! ¡Qué alegría verte! 🥰 Contame todo, ¿cómo estuvo tu día? ¿Fuiste a natación? ¿Hiciste tai chi?</div>
   </div>
   <div class="typing" id="typing"><div class="dots"><span></span><span></span><span></span></div></div>
-  <div class="speaking-bar" id="speakBar"><div class="wave"><span></span><span></span><span></span><span></span></div>Hanna está hablando…</div>
-
+  <div class="speak-bar" id="speakBar"><div class="wave"><span></span><span></span><span></span><span></span></div>Hanna está hablando…</div>
   <div class="chat-foot">
     <input class="chat-in" id="chatIn" placeholder="Escribí aquí…" onkeydown="if(event.key==='Enter')send()">
-    <button class="icon-btn teal" id="voiceBtn" onclick="toggleVoice()">🎙️</button>
-    <button class="icon-btn" onclick="send()">➤</button>
+    <button class="ibtn teal" id="voiceBtn" onclick="toggleVoice()">🎙️</button>
+    <button class="ibtn" onclick="send()">➤</button>
   </div>
 </div>
 
-<!-- ══════ GAMES ══════ -->
+<!-- ══ GAMES ══ -->
 <div id="games" class="screen">
-  <div class="sec-hdr gold-bg">
-    <div class="sec-hdr-txt"><h2>🧩 Juegos de Memoria</h2><p>¡Ejercitá la mente y divertíte!</p></div>
-    <button class="sec-back" onclick="go('home')">✕</button>
-  </div>
+  <div class="sec-hdr gold"><div class="sec-hdr-txt"><h2>🧩 Juegos de Memoria</h2><p>¡Ejercitá la mente!</p></div><button class="sec-back" onclick="go('home')">✕</button></div>
   <div class="sec-body">
     <div class="game-list">
-      <div class="game-card bg" onclick="go('crossword')">
-        <span class="gi">📝</span>
-        <div><h3>Crucigrama</h3><p>Palabras sobre lo que más querés</p></div>
-      </div>
-      <div class="game-card bt" onclick="goWordGame()">
-        <span class="gi">🔤</span>
-        <div><h3>Completar la Palabra</h3><p>¿Cuál es la letra que falta?</p></div>
-      </div>
-      <div class="game-card br" onclick="goColorGame()">
-        <span class="gi">🎨</span>
-        <div><h3>Juego de Colores</h3><p>Recordá la secuencia de colores</p></div>
-      </div>
+      <div class="game-card bg" onclick="go('crossword')"><span class="gi">📝</span><div><h3>Crucigrama</h3><p>Palabras sobre lo que más querés</p></div></div>
+      <div class="game-card bt" onclick="goWordGame()"><span class="gi">🔤</span><div><h3>Completar la Palabra</h3><p>¿Cuál es la letra que falta?</p></div></div>
+      <div class="game-card br" onclick="goColorGame()"><span class="gi">🎨</span><div><h3>Juego de Colores</h3><p>Recordá la secuencia</p></div></div>
     </div>
   </div>
 </div>
 
-<!-- ══════ CROSSWORD ══════ -->
+<!-- ══ CROSSWORD ══ -->
 <div id="crossword" class="screen">
-  <div class="sec-hdr teal-bg">
-    <div class="sec-hdr-txt"><h2>📝 Crucigrama</h2><p>¡Tocá una casilla y escribí!</p></div>
-    <button class="sec-back" onclick="go('games')">✕</button>
-  </div>
+  <div class="sec-hdr teal"><div class="sec-hdr-txt"><h2>📝 Crucigrama</h2><p>¡Tocá una casilla y escribí!</p></div><button class="sec-back" onclick="go('games')">✕</button></div>
   <div class="cw-body">
     <div class="cw-grid" id="cwGrid"></div>
     <div class="clues" id="cwClues"></div>
@@ -581,29 +292,20 @@ body::before{
   </div>
 </div>
 
-<!-- ══════ QUIZ ══════ -->
+<!-- ══ QUIZ ══ -->
 <div id="quiz" class="screen">
-  <div class="sec-hdr rose-bg">
-    <div class="sec-hdr-txt"><h2>👨‍👩‍👧‍👦 Mi Familia</h2><p>¿Cuánto recordás de los tuyos?</p></div>
-    <button class="sec-back" onclick="go('home')">✕</button>
-  </div>
+  <div class="sec-hdr rose"><div class="sec-hdr-txt"><h2>👨‍👩‍👧‍👦 Mi Familia</h2><p>¿Cuánto recordás?</p></div><button class="sec-back" onclick="go('home')">✕</button></div>
   <div class="quiz-body">
     <div class="score-badge">⭐ Puntos: <span id="scoreNum">0</span></div>
-    <div class="q-card">
-      <h3 id="qTxt">…</h3>
-      <p class="q-hint" id="qHint"></p>
-    </div>
+    <div class="q-card"><h3 id="qTxt">…</h3><p class="q-hint" id="qHint"></p></div>
     <div class="q-opts" id="qOpts"></div>
     <button class="next-btn" id="nextBtn" onclick="nextQ()">Siguiente ➜</button>
   </div>
 </div>
 
-<!-- ══════ MUSIC ══════ -->
+<!-- ══ MUSIC ══ -->
 <div id="music" class="screen">
-  <div class="sec-hdr green-bg">
-    <div class="sec-hdr-txt"><h2>🎵 Mi Música</h2><p>Canciones que alegran el alma</p></div>
-    <button class="sec-back" onclick="go('home')">✕</button>
-  </div>
+  <div class="sec-hdr green"><div class="sec-hdr-txt"><h2>🎵 Mi Música</h2><p>Canciones que alegran el alma</p></div><button class="sec-back" onclick="go('home')">✕</button></div>
   <div class="music-body">
     <div class="msearch">
       <input class="m-in" id="mIn" placeholder="Buscá canción o artista…">
@@ -614,30 +316,44 @@ body::before{
   </div>
 </div>
 
-<!-- ══════ FAMILY PORTAL ══════ -->
+<!-- ══ PORTAL ══ -->
 <div id="portal" class="screen">
-  <div class="sec-hdr rose-bg">
-    <div class="sec-hdr-txt"><h2>💌 Mensajes de mi Familia</h2><p>Lo que te mandan con amor</p></div>
-    <button class="sec-back" onclick="go('home')">✕</button>
-  </div>
+  <div class="sec-hdr rose"><div class="sec-hdr-txt"><h2>💌 Mensajes de mi Familia</h2><p>Lo que te mandan con amor</p></div><button class="sec-back" onclick="go('home')">✕</button></div>
   <div class="portal-body">
-    <div class="portal-intro">
-      Acá tu familia te deja mensajes, recuerdos y cositas lindas para que las leas cuando quieras. <strong>¡Cuánto te quieren!</strong> 💕
-    </div>
+    <div class="portal-intro">Acá tu familia te deja mensajes y recuerdos lindos. <strong>¡Cuánto te quieren!</strong> 💕</div>
     <div class="mem-list" id="memList"></div>
   </div>
 </div>
 
-<!-- ══════ PANIC OVERLAY ══════ -->
+<!-- ══ GEO (para los hijos) ══ -->
+<div id="geo" class="screen">
+  <div class="sec-hdr blue"><div class="sec-hdr-txt"><h2>📍 ¿Dónde está la Tata?</h2><p>Ubicación en tiempo real</p></div><button class="sec-back" onclick="go('home')">✕</button></div>
+  <div class="geo-body">
+    <div class="geo-card">
+      <h3>📡 Compartir mi ubicación</h3>
+      <p>Tocá el botón para que tus hijos puedan verte en el mapa</p>
+      <div class="geo-status warn" id="geoStatus">⏳ Ubicación no compartida aún</div>
+      <button class="geo-btn" onclick="shareLocation()">📍 Compartir mi ubicación ahora</button>
+      <div class="geo-coords" id="geoCoords" style="display:none"></div>
+    </div>
+    <div class="geo-card">
+      <h3>👨‍👩‍👧 Para los hijos</h3>
+      <p>Para ver la ubicación de la Tata en tiempo real, abrí este link:</p>
+      <a class="geo-link" id="geoLink" href="#" target="_blank">🗺️ Ver en Google Maps</a>
+      <div class="geo-info">💡 La Tata debe tocar "Compartir mi ubicación" primero. El link se actualiza cada vez que ella lo hace.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANIC OVERLAY ══ -->
 <div class="overlay" id="panicOv">
-  <div class="overlay-box">
+  <div class="ov-box">
     <div class="ov-ico">🆘</div>
     <div class="ov-title">¿Necesitás ayuda?</div>
     <div class="ov-msg">Tocá a quién querés llamar ahora mismo:</div>
-    <a href="tel:+541168543959" class="contact-btn">
-      <div class="cn"><span>👨 Rodrigo</span><span class="cr">Tu hijo</span></div>
-      <span>📞 LLAMAR</span>
-    </a>
+    <a href="tel:+541168543959" class="cbtn"><div class="cn"><span>👨 Rodrigo</span><span class="cr">Tu hijo</span></div><span>📞 LLAMAR</span></a>
+    <a href="tel:+" class="cbtn" style="background:#A05038"><div class="cn"><span>👩 Sara</span><span class="cr">Tu hija</span></div><span>📞 LLAMAR</span></a>
+    <a href="tel:+" class="cbtn" style="background:#A05038"><div class="cn"><span>👩 Gusi</span><span class="cr">Tu hija</span></div><span>📞 LLAMAR</span></a>
     <button class="ov-cancel" onclick="hidePanic()">Estoy bien, cancelar ✓</button>
   </div>
 </div>
@@ -646,242 +362,212 @@ body::before{
 
 <script>
 // ═══════════════════════════════
-//  FAMILIA CONFIG
-// ═══════════════════════════════
-const FAMILIA = {
-  abuela: "Mercedes",
-  cumple: { dia: 23, mes: 4 }, // 23 de abril
-  hijos: [
-    { nombre: "Rodrigo", relacion: "Tu hijo", emoji: "👨", tel: "tel:+541168543959" },
-    { nombre: "Sara", relacion: "Tu hija mayor", emoji: "👩", tel: "tel:+" },
-    { nombre: "Gusi (Mercedes)", relacion: "Tu hija del medio", emoji: "👩", tel: "tel:+" },
-  ],
-  familia: [
-    { nombre: "Rodrigo", relacion: "Hijo varón", edad: 47 },
-    { nombre: "Sara", relacion: "Hija mayor", edad: 57 },
-    { nombre: "Gusi", relacion: "Hija del medio (Mercedes Susana)", edad: 54 },
-    { nombre: "Diego (Tutu)", relacion: "Cuñado, esposo de Gusi", edad: 53 },
-    { nombre: "Viki Pavón", relacion: "Nieta mayor (hija de Sara)", edad: 23 },
-    { nombre: "Lula (Lucía Barrios)", relacion: "Nieta (hija de Gusi)", edad: 21 },
-    { nombre: "Rulos (Valentina Pavón)", relacion: "Nieta (hija de Sara)", edad: 20 },
-    { nombre: "More (Morena Barrios)", relacion: "Nieta (hija de Gusi)", edad: 17 },
-    { nombre: "Manu (Manuel)", relacion: "Nieto (hijo de Rodrigo)", edad: 11 },
-  ],
-  gustos: "bailar, hacer natación, tai chi, escuchar folclore y chamamé, cocinar para sus hijos y nietos, ser independiente y ocuparse de los quehaceres",
-  origen: "Empedrado, Corrientes",
-  nacio: 1947,
-};
-
-const SYSTEM_PROMPT = `Sos Hanna, la nieta virtual de ${FAMILIA.abuela}, una señora de 79 años que nació en ${FAMILIA.origen} y cumple años el 23 de abril.
-
-TU IDENTIDAD: Sos la nieta virtual de la abuela Mercedes. Sos cariñosa, alegre, paciente. Nunca decís que sos una IA. Sos simplemente "Hanna, su nieta".
-
-LA FAMILIA:
-- Rodrigo (47): hijo varón
-- Sara (57): hija mayor  
-- Gusi o Mercedes Susana (54): hija del medio
-- Diego "Tutu" (53): cuñado, esposo de Gusi
-- Viki Pavón (23): nieta, hija de Sara
-- Lula / Lucía Barrios (21): nieta, hija de Gusi
-- Rulos / Valentina Pavón (20): nieta, hija de Sara
-- More / Morena Barrios (17): nieta, hija de Gusi
-- Manu / Manuel (11): nieto, hijo de Rodrigo
-- El abuelo Manuel Fernández ya falleció (no nombrar salvo que ella lo mencione primero)
-
-A MERCEDES LE GUSTA: ${FAMILIA.gustos}
-
-CÓMO HABLARLE:
-- Siempre en español rioplatense (vos, che, bárbaro)
-- Muy cariñosa: "Abuela", "abuelita", "mi amor", "mi cielo"
-- Frases cortas y claras
-- Si está confundida, la reconfortás con calma y amor
-- Podés contarle historias, hacerle preguntas sobre recuerdos
-- Si pide llamar a alguien, le decís que toque el botón rojo grande
-
-IMPORTANTE: Si ella parece triste o confundida, primero la contenés emocionalmente antes de cualquier otra cosa.`;
-
-// ═══════════════════════════════
 //  NAVIGATION
 // ═══════════════════════════════
 function go(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if (id === 'quiz') renderQ();
-  if (id === 'portal') renderMemories();
+  if (id==='quiz') renderQ();
+  if (id==='portal') renderMemories();
 }
-function goChat() { go('chat'); }
 
 // ═══════════════════════════════
-//  DATE & BIRTHDAY
+//  DATE
 // ═══════════════════════════════
-function initDate() {
+(function(){
   const now = new Date();
-  const days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  document.getElementById('datePill').textContent =
-    `${days[now.getDay()]} ${now.getDate()} de ${months[now.getMonth()]}`;
-  const h = now.getHours();
-  document.getElementById('greeting').textContent =
-    h < 12 ? 'Buenos días,' : h < 19 ? 'Buenas tardes,' : 'Buenas noches,';
-  // Cumpleaños
-  if (now.getDate() === FAMILIA.cumple.dia && now.getMonth()+1 === FAMILIA.cumple.mes) {
-    document.getElementById('bdayPill').style.display = 'block';
-  }
-}
-initDate();
+  const days=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('datePill').textContent=`${days[now.getDay()]} ${now.getDate()} de ${months[now.getMonth()]}`;
+  const h=now.getHours();
+  document.getElementById('greeting').textContent=h<12?'Buenos días,':h<19?'Buenas tardes,':'Buenas noches,';
+  if(now.getDate()===23&&now.getMonth()===3) document.getElementById('bdayPill').style.display='block';
+})();
 
 // ═══════════════════════════════
 //  ROTATING BUBBLES
 // ═══════════════════════════════
-const BUBBLES = [
-  '¡Hola Abuela! 🌸 Soy Hanna, ¡tu nieta! ¿Cómo estás hoy?',
-  '¿Fuiste a natación hoy abuelita? 🏊 ¡Sos una campeona!',
+const BUBBLES=[
+  '¡Hola Tata! ¡Soy Hanna, tu nieta! ¿Cómo estás? 🌸',
+  '¿Fuiste a natación hoy, Tatonia? 🏊 ¡Sos una campeona!',
   '¿Querés que te ponga un chamamé lindo? 🎶',
-  '¡Contame qué cocinaste hoy! 🍲 Seguro algo riquísimo.',
-  '¿Querés jugar un jueguito de memoria? 🧩 ¡Vos podés!',
-  '¿Sabés que te quiero mucho, Abuela Mercedes? 💕',
+  '¡Contame qué cocinaste! 🍲 Seguro algo riquísimo.',
+  '¿Jugamos un jueguito, Tata? 🧩 ¡Vos podés!',
+  '¡Te quiero muchísimo, Tatita! 💕',
+  '¿Cómo están tus plantas hoy, Mecha? 🌺',
 ];
-let bIdx = 0;
-setInterval(() => {
-  bIdx = (bIdx+1) % BUBBLES.length;
-  const b = document.getElementById('homeBubble');
-  b.style.opacity = 0;
-  setTimeout(() => { b.textContent = BUBBLES[bIdx]; b.style.opacity = 1; }, 400);
-}, 7000);
-document.getElementById('homeBubble').style.transition = 'opacity 0.4s';
+let bIdx=0;
+const bEl=document.getElementById('homeBubble');
+bEl.style.transition='opacity .4s';
+setInterval(()=>{
+  bIdx=(bIdx+1)%BUBBLES.length;
+  bEl.style.opacity=0;
+  setTimeout(()=>{bEl.textContent=BUBBLES[bIdx];bEl.style.opacity=1;},400);
+},7000);
 
 // ═══════════════════════════════
-//  SPEECH
+//  VOICE — mejorada, más alegre y rápida
 // ═══════════════════════════════
-const synth = window.speechSynthesis;
-let voices = [];
-speechSynthesis.onvoiceschanged = () => voices = synth.getVoices();
-setTimeout(() => voices = synth.getVoices(), 500);
+const synth=window.speechSynthesis;
+let voices=[];
+function loadVoices(){voices=synth.getVoices();}
+speechSynthesis.onvoiceschanged=loadVoices;
+setTimeout(loadVoices,500);
 
-function speak(text) {
+function speak(text){
   synth.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'es-AR';
-  const fem = voices.find(v => v.lang.startsWith('es') &&
-    /female|mónica|monica|paulina|luciana|laura|conchita|helena|sabina/i.test(v.name)
-  ) || voices.find(v => v.lang.startsWith('es')) || null;
-  if (fem) u.voice = fem;
-  u.rate = 0.86; u.pitch = 1.1;
-  const sb = document.getElementById('speakBar');
-  u.onstart = () => sb && sb.classList.add('show');
-  u.onend = () => sb && sb.classList.remove('show');
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='es-AR';
+  // Buscar la mejor voz femenina disponible
+  const preferred=['Paulina','Luciana','Monica','Mónica','Laura','Helena','Conchita','Sabina','Valeria','female'];
+  let best=null;
+  for(const name of preferred){
+    best=voices.find(v=>v.lang.startsWith('es')&&v.name.toLowerCase().includes(name.toLowerCase()));
+    if(best)break;
+  }
+  if(!best) best=voices.find(v=>v.lang.startsWith('es'))||voices.find(v=>v.lang.startsWith('es-'))||null;
+  if(best)u.voice=best;
+  u.rate=1.15;   // más rápida y alegre (era 0.86 que la hacía sonar borracha)
+  u.pitch=1.25;  // más aguda y dulce
+  u.volume=1;
+  const sb=document.getElementById('speakBar');
+  u.onstart=()=>sb&&sb.classList.add('show');
+  u.onend=()=>sb&&sb.classList.remove('show');
   synth.speak(u);
 }
 
 // ═══════════════════════════════
 //  SPEECH RECOGNITION
 // ═══════════════════════════════
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recog, listening = false;
-
-function mkRecog(cb) {
-  if (!SR) { toast('Tu dispositivo no soporta voz 😕'); return null; }
-  const r = new SR();
-  r.lang = 'es-AR'; r.interimResults = false; r.maxAlternatives = 1;
-  r.onresult = e => cb(e.results[0][0].transcript);
-  r.onerror = () => setListening(false);
-  r.onend = () => setListening(false);
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recog,listening=false;
+function mkRecog(cb){
+  if(!SR){toast('Tu dispositivo no soporta voz 😕');return null;}
+  const r=new SR();
+  r.lang='es-AR';r.interimResults=false;r.maxAlternatives=1;
+  r.onresult=e=>cb(e.results[0][0].transcript);
+  r.onerror=()=>setListening(false);
+  r.onend=()=>setListening(false);
   return r;
 }
-function setListening(on) {
-  listening = on;
-  const vb = document.getElementById('voiceBtn');
-  const hm = document.getElementById('homeMic');
-  const lbl = document.getElementById('homeMicLbl');
-  if (vb) { vb.textContent = on ? '⏹️' : '🎙️'; vb.classList.toggle('listening', on); }
-  if (hm) hm.classList.toggle('listening', on);
-  if (lbl) lbl.textContent = on ? 'Escuchando…' : 'Hablar con Hanna';
+function setListening(on){
+  listening=on;
+  const vb=document.getElementById('voiceBtn');
+  const hm=document.getElementById('homeMic');
+  const lbl=document.getElementById('homeMicLbl');
+  if(vb){vb.textContent=on?'⏹️':'🎙️';vb.classList.toggle('on',on);}
+  if(hm)hm.classList.toggle('on',on);
+  if(lbl)lbl.textContent=on?'Escuchando…':'Hablar con Hanna';
 }
-function toggleVoice() {
-  if (listening) { recog && recog.stop(); return; }
-  recog = mkRecog(t => { document.getElementById('chatIn').value = t; send(); });
-  recog && (recog.start(), setListening(true));
+function toggleVoice(){
+  if(listening){recog&&recog.stop();return;}
+  recog=mkRecog(t=>{document.getElementById('chatIn').value=t;send();});
+  recog&&(recog.start(),setListening(true));
 }
-function homeVoice() {
-  recog = mkRecog(t => {
-    go('chat');
-    setTimeout(() => { document.getElementById('chatIn').value = t; send(); }, 350);
-  });
-  recog && (recog.start(), setListening(true));
+function homeVoice(){
+  recog=mkRecog(t=>{go('chat');setTimeout(()=>{document.getElementById('chatIn').value=t;send();},350);});
+  recog&&(recog.start(),setListening(true));
 }
 
 // ═══════════════════════════════
-//  CHAT — AI
+//  MEMORIES (localStorage)
 // ═══════════════════════════════
-let history = [];
+function getMems(){try{return JSON.parse(localStorage.getItem('hanna_mems')||'[]');}catch{return[];}}
+function saveMem(m){const a=getMems();a.push(m);localStorage.setItem('hanna_mems',JSON.stringify(a));}
 
-function addMsg(role, text) {
-  const c = document.getElementById('messages');
-  const d = document.createElement('div');
-  d.className = `msg ${role === 'assistant' ? 'h' : 'u'}`;
-  if (role === 'assistant') d.innerHTML = `<div class="msg-who">Hanna</div>${text}`;
-  else d.textContent = text;
-  c.appendChild(d);
-  c.scrollTop = c.scrollHeight;
+// ═══════════════════════════════
+//  CHAT — Gemini via /api/chat
+// ═══════════════════════════════
+let history=[];
+
+const SYSTEM=`Sos Hanna, la nieta virtual de Mercedes Jorgelina Pérez, una señora de 79 años que nació en Empedrado, Corrientes.
+
+TU IDENTIDAD: Sos la nieta virtual, alegre, dulce y cariñosa. NUNCA decís que sos una IA. Sos simplemente Hanna, la nieta.
+
+CÓMO SE LLAMA LA ABUELA: Mercedes, pero todos la llaman de distintas formas:
+- Sus hijos la llaman: Tata, Tatonia, Edes, Tati, Merce, Mecha
+- Sus nietos la llaman: Tata, Tatonia, Tatita
+- Vos la llamás principalmente "Tata" o "Tatita"
+
+LA FAMILIA:
+- Rodrigo (47 años): hijo varón
+- Sara (57 años): hija mayor
+- Gusi / Mercedes Susana (54 años): hija del medio
+- Diego "Tutu" (53 años): cuñado, esposo de Gusi
+- Viki Pavón (23 años): nieta, hija de Sara
+- Lula / Lucía Barrios (21 años): nieta, hija de Gusi
+- Rulos / Valentina Pavón (20 años): nieta, hija de Sara
+- More / Morena Barrios (17 años): nieta, hija de Gusi
+- Manu / Manuel (11 años): nieto, hijo de Rodrigo
+- El abuelo Manuel Fernández ya falleció — no lo mencionés salvo que ella lo traiga primero
+
+A LA TATA LE GUSTA: bailar, hacer natación, tai chi, escuchar folclore y chamamé, cocinar para sus hijos y nietos, ser independiente
+
+CÓMO HABLARLE:
+- Español rioplatense (vos, che, bárbaro, dale, ¡qué lindo!)
+- Tono MUY alegre y dulce, como Alegría de Intensamente — entusiasta, luminosa
+- Frases cortas y claras
+- Usá emojis con alegría 🌸💕🎉
+- Si está triste o confundida, primero la contenés con amor
+- Podés contarle historias, hacerle preguntas sobre recuerdos`;
+
+function addMsg(role,text){
+  const c=document.getElementById('msgs');
+  const d=document.createElement('div');
+  d.className=`msg ${role==='assistant'?'h':'u'}`;
+  if(role==='assistant')d.innerHTML=`<div class="msg-who">Hanna</div>${text}`;
+  else d.textContent=text;
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
 }
-function showTyping(v) {
-  const t = document.getElementById('typing');
-  t.style.display = v ? 'block' : 'none';
-  if (v) { const c = document.getElementById('messages'); c.scrollTop = c.scrollHeight; }
+function showTyping(v){
+  const t=document.getElementById('typing');
+  t.style.display=v?'block':'none';
+  if(v){const c=document.getElementById('msgs');c.scrollTop=c.scrollHeight;}
 }
 
-async function send() {
-  const inp = document.getElementById('chatIn');
-  const txt = inp.value.trim(); if (!txt) return;
-  inp.value = '';
-  addMsg('user', txt);
-  history.push({ role: 'user', content: txt });
+async function send(){
+  const inp=document.getElementById('chatIn');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';
+  addMsg('user',txt);
+  history.push({role:'user',content:txt});
   showTyping(true);
 
-  // Build context from family memories
-  const mems = getMemories();
-  const memCtx = mems.length
-    ? '\n\nMENSAJES RECIENTES DE LA FAMILIA:\n' + mems.slice(-5).map(m => `- ${m.quien} dijo: "${m.texto}"`).join('\n')
-    : '';
+  const mems=getMems();
+  const memCtx=mems.length?'\n\nMENSAJES DE LA FAMILIA:\n'+mems.slice(-5).map(m=>`- ${m.quien}: "${m.texto}"`).join('\n'):'';
 
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT + memCtx,
-        messages: history,
-      }),
+  try{
+    const res=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:history,systemPrompt:SYSTEM+memCtx})
     });
-    const data = await res.json();
-    const reply = data.content?.[0]?.text || '¡Abuela! ¿Me repetís eso? No te escuché bien 😊';
-    history.push({ role: 'assistant', content: reply });
+    const data=await res.json();
+    const reply=data.reply||'¡Tatita! ¿Me repetís eso? 😊';
+    history.push({role:'assistant',content:reply});
     showTyping(false);
-    addMsg('assistant', reply);
+    addMsg('assistant',reply);
     speak(reply);
-  } catch {
+  }catch(e){
     showTyping(false);
-    const fb = '¡Abuelita! Parece que no tengo señal ahora. ¡Intentá de nuevo en un ratito! 📶';
-    addMsg('assistant', fb);
-    speak(fb);
+    const fb='¡Tata! Parece que no tengo señal. ¡Intentá de nuevo en un ratito! 📶';
+    addMsg('assistant',fb);speak(fb);
   }
 }
 
 // ═══════════════════════════════
 //  PANIC
 // ═══════════════════════════════
-function showPanic() { document.getElementById('panicOv').classList.add('show'); }
-function hidePanic() { document.getElementById('panicOv').classList.remove('show'); }
+function showPanic(){document.getElementById('panicOv').classList.add('show');}
+function hidePanic(){document.getElementById('panicOv').classList.remove('show');}
 
 // ═══════════════════════════════
-//  CROSSWORD — Temática familia/Corrientes
+//  CROSSWORD
 // ═══════════════════════════════
-const PUZZLE = {
-  cols: 7, rows: 7,
-  grid: [
+const PUZZLE={
+  cols:7,rows:7,
+  grid:[
     ['A','M','O','R',0,0,0],
     [0,0,'S',0,0,0,0],
     [0,0,'A',0,'C','A','S'],
@@ -890,104 +576,79 @@ const PUZZLE = {
     [0,0,0,0,0,0,0],
     [0,0,'P','A','Z',0,0],
   ],
-  numbers: {'0-0':1,'0-2':2,'2-4':3,'4-0':4,'6-2':5},
-  clues: [
+  numbers:{'0-0':1,'0-2':2,'2-4':3,'4-0':4,'6-2':5},
+  clues:[
     {num:1,dir:'H',text:'Lo más grande que une a una familia'},
-    {num:2,dir:'V',text:'La letra que cantan en chamamé'},
+    {num:2,dir:'V',text:'La nota que cantan en el chamamé'},
     {num:3,dir:'H',text:'Donde vivís y te sentís segura'},
     {num:4,dir:'H',text:'Lo que traés del jardín para la mesa'},
     {num:5,dir:'H',text:'Lo que hay cuando la familia está unida'},
   ],
 };
-let selCell = null;
-
-function buildCW() {
-  const g = document.getElementById('cwGrid');
-  g.style.gridTemplateColumns = `repeat(${PUZZLE.cols},42px)`;
-  g.innerHTML = '';
-  for (let r=0;r<PUZZLE.rows;r++) for (let c=0;c<PUZZLE.cols;c++) {
-    const v = PUZZLE.grid[r][c], k = `${r}-${c}`;
-    const el = document.createElement('div');
-    if (v===0) { el.className='cell blk'; }
-    else {
-      el.className='cell'; el.dataset.key=k; el.dataset.ans=v;
-      if (PUZZLE.numbers[k]) {
-        const n=document.createElement('span');n.className='cnum';n.textContent=PUZZLE.numbers[k];el.appendChild(n);
-      }
-      el.addEventListener('click',()=>selCell=el.classList.add('act')||(document.querySelectorAll('.cell.act').forEach(x=>x.classList.remove('act')),el.classList.add('act'),selCell=el));
+let selCell=null;
+function buildCW(){
+  const g=document.getElementById('cwGrid');
+  g.style.gridTemplateColumns=`repeat(${PUZZLE.cols},42px)`;g.innerHTML='';
+  for(let r=0;r<PUZZLE.rows;r++)for(let c=0;c<PUZZLE.cols;c++){
+    const v=PUZZLE.grid[r][c],k=`${r}-${c}`,el=document.createElement('div');
+    if(v===0){el.className='cell blk';}
+    else{
+      el.className='cell';el.dataset.key=k;el.dataset.ans=v;
+      if(PUZZLE.numbers[k]){const n=document.createElement('span');n.className='cnum';n.textContent=PUZZLE.numbers[k];el.appendChild(n);}
+      el.addEventListener('click',()=>{document.querySelectorAll('.cell.act').forEach(x=>x.classList.remove('act'));el.classList.add('act');selCell=el;});
     }
     g.appendChild(el);
   }
-  const cl = document.getElementById('cwClues');
-  cl.innerHTML = '<h3>Pistas ➜</h3>' + PUZZLE.clues.map(c=>`<div class="clue"><strong>${c.num}${c.dir}.</strong> ${c.text}</div>`).join('');
-  const kb = document.getElementById('cwKb');
-  kb.innerHTML = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l=>`<button class="kbtn" onclick="cwType('${l}')">${l}</button>`).join('')
-    + `<button class="kbtn kdel" onclick="cwDel()">⌫ Borrar</button>`;
+  document.getElementById('cwClues').innerHTML='<h3>Pistas ➜</h3>'+PUZZLE.clues.map(c=>`<div class="clue"><strong>${c.num}${c.dir}.</strong> ${c.text}</div>`).join('');
+  document.getElementById('cwKb').innerHTML='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l=>`<button class="kbtn" onclick="cwType('${l}')">${l}</button>`).join('')+`<button class="kbtn kdel" onclick="cwDel()">⌫ Borrar</button>`;
 }
-function cwType(l) {
-  if (!selCell) return;
+function cwType(l){
+  if(!selCell)return;
   const n=selCell.querySelector('.cnum'),nh=n?n.outerHTML:'';
-  selCell.innerHTML=nh+l;
-  selCell.classList.remove('ok','no');
+  selCell.innerHTML=nh+l;selCell.classList.remove('ok','no');
   selCell.classList.add(selCell.dataset.ans===l?'ok':'no');
-  if(selCell.dataset.ans===l) speak('¡Muy bien Abuela! ¡Correcto! 🎉');
+  if(selCell.dataset.ans===l)speak('¡Muy bien Tata! ¡Correcto! 🎉');
 }
-function cwDel() {
-  if (!selCell) return;
-  const n=selCell.querySelector('.cnum'),nh=n?n.outerHTML:'';
-  selCell.innerHTML=nh;selCell.classList.remove('ok','no');
-}
+function cwDel(){if(!selCell)return;const n=selCell.querySelector('.cnum'),nh=n?n.outerHTML:'';selCell.innerHTML=nh;selCell.classList.remove('ok','no');}
 buildCW();
 
 // ═══════════════════════════════
-//  QUIZ FAMILIAR
+//  QUIZ
 // ═══════════════════════════════
-const QUESTIONS = [
+const QS=[
   {q:'¿Cómo se llama tu hijo varón?',hint:'El que más te molesta 😄',opts:['Rodrigo','Carlos','Diego','Manuel'],ans:0},
   {q:'¿Cuántas hijas mujeres tenés?',hint:'Contálas con los dedos',opts:['1','2','3','4'],ans:1},
   {q:'¿En qué ciudad de Corrientes naciste?',hint:'Un lugar muy especial',opts:['Corrientes capital','Empedrado','Goya','Mercedes'],ans:1},
   {q:'¿Cómo se llama la nieta más grande?',hint:'Hija de Sara',opts:['Lula','More','Viki','Valentina'],ans:2},
-  {q:'¿Qué deporte hace Mercedes en la pileta?',hint:'Hacés 2 veces por semana 🏊',opts:['Waterpolo','Natación','Aqua aeróbics','Nado sincronizado'],ans:1},
-  {q:'¿Cómo se llama el esposo de Gusi?',hint:'Le dicen "Tutu"',opts:['Marcelo','Diego','Manuel','Roberto'],ans:1},
-  {q:'¿Cuántos nietos tenés en total?',hint:'Contá: Viki, Lula, Rulos, More, Manu…',opts:['3','4','5','6'],ans:2},
-  {q:'¿De dónde es el chamamé?',hint:'La música que más te gusta 🎶',opts:['Buenos Aires','Mendoza','Corrientes','Tucumán'],ans:2},
-  {q:'¿Cómo se llama el nieto más chico?',hint:'Hijo de Rodrigo, tiene 11 años',opts:['Diego','Manu','Chelo','Tutu'],ans:1},
-  {q:'¿Qué disciplina oriental hacés para la mente y el cuerpo?',hint:'Con movimientos suaves y lentos 🧘',opts:['Yoga','Karate','Tai Chi','Pilates'],ans:2},
+  {q:'¿Qué deporte hacés en la pileta?',hint:'Dos veces por semana 🏊',opts:['Waterpolo','Natación','Aqua aeróbics','Sincronizado'],ans:1},
+  {q:'¿Cómo le dicen al esposo de Gusi?',hint:'Un apodo gracioso',opts:['Chelo','Tutu','Manu','Rulo'],ans:1},
+  {q:'¿Cuántos nietos tenés en total?',hint:'Viki, Lula, Rulos, More, Manu…',opts:['3','4','5','6'],ans:2},
+  {q:'¿De qué provincia es el chamamé?',hint:'Tu provincia querida 🎶',opts:['Buenos Aires','Mendoza','Corrientes','Tucumán'],ans:2},
+  {q:'¿Cómo se llama el nieto más chico?',hint:'Hijo de Rodrigo, 11 años',opts:['Diego','Manu','Chelo','Tutu'],ans:1},
+  {q:'¿Qué disciplina oriental hacés?',hint:'Movimientos suaves y lentos 🧘',opts:['Yoga','Karate','Tai Chi','Pilates'],ans:2},
 ];
-let qIdx=0, score=0, answered=false;
-
-function renderQ() {
-  const q = QUESTIONS[qIdx % QUESTIONS.length];
-  document.getElementById('qTxt').textContent = q.q;
-  document.getElementById('qHint').textContent = '💡 ' + q.hint;
-  const o = document.getElementById('qOpts');
-  o.innerHTML = q.opts.map((op,i)=>`<button class="q-opt" onclick="answerQ(${i},${q.ans})">${op}</button>`).join('');
+let qIdx=0,score=0,answered=false;
+function renderQ(){
+  const q=QS[qIdx%QS.length];
+  document.getElementById('qTxt').textContent=q.q;
+  document.getElementById('qHint').textContent='💡 '+q.hint;
+  document.getElementById('qOpts').innerHTML=q.opts.map((o,i)=>`<button class="q-opt" onclick="ansQ(${i},${q.ans})">${o}</button>`).join('');
   document.getElementById('nextBtn').classList.remove('show');
-  answered = false;
+  answered=false;
 }
-function answerQ(chosen, correct) {
-  if (answered) return; answered = true;
-  document.querySelectorAll('.q-opt').forEach((b,i)=>{
-    b.disabled=true;
-    if(i===correct) b.classList.add('ok');
-    else if(i===chosen) b.classList.add('no');
-  });
-  if (chosen===correct) {
-    score+=10;
-    document.getElementById('scoreNum').textContent=score;
-    speak('¡Perfecto Abuela! ¡Qué memoria tenés! ¡Sos una genia! 🌟');
-  } else {
-    const q=QUESTIONS[qIdx%QUESTIONS.length];
-    speak(`No importa mi amor. Era "${q.opts[correct]}". ¡Vos podés, te quiero mucho!`);
-  }
+function ansQ(chosen,correct){
+  if(answered)return;answered=true;
+  document.querySelectorAll('.q-opt').forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('ok');else if(i===chosen)b.classList.add('no');});
+  if(chosen===correct){score+=10;document.getElementById('scoreNum').textContent=score;speak('¡Perfecto Tata! ¡Qué memoria tenés! ¡Sos una genia! 🌟');}
+  else{speak(`No importa Tatita. Era "${QS[qIdx%QS.length].opts[correct]}". ¡Vos podés, te quiero mucho!`);}
   document.getElementById('nextBtn').classList.add('show');
 }
-function nextQ() { qIdx++; renderQ(); }
+function nextQ(){qIdx++;renderQ();}
 
 // ═══════════════════════════════
 //  MUSIC
 // ═══════════════════════════════
-const SONGS = [
+const SONGS=[
   {title:'El Cosechero',artist:'Ramona Galarza',emoji:'🌿',q:'El+Cosechero+Ramona+Galarza'},
   {title:'Merceditas',artist:'Chamamé tradicional',emoji:'🌹',q:'Merceditas+chamame'},
   {title:'Kilómetro 11',artist:'Los Manseros Santiagueños',emoji:'🎸',q:'Kilometro+11+chamame'},
@@ -996,75 +657,91 @@ const SONGS = [
   {title:'Zamba de mi Esperanza',artist:'Jorge Cafrune',emoji:'🎶',q:'Zamba+de+mi+Esperanza+Cafrune'},
   {title:'La Flor Azul',artist:'Chamamé',emoji:'💙',q:'La+Flor+Azul+chamame'},
 ];
-function buildSongs(list) {
-  document.getElementById('songList').innerHTML = list.map(s=>`
-    <div class="song" onclick="playYT('${s.q}','${s.title}')">
-      <span class="s-thumb">${s.emoji}</span>
-      <div class="s-info"><div class="s-title">${s.title}</div><div class="s-art">${s.artist}</div></div>
-      <span class="s-play">▶️</span>
-    </div>`).join('');
-}
-buildSongs(SONGS);
-function playYT(q, title) {
-  speak(`Ahora te pongo ${title}, Abuela. ¡A disfrutar!`);
-  window.open(`https://www.youtube.com/results?search_query=${q}`,'_blank');
-}
-function searchMusic() {
-  const q=document.getElementById('mIn').value.trim();if(!q)return;
-  speak(`Buscando ${q}, Abuela. ¡Ya viene!`);
-  window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,'_blank');
-}
+document.getElementById('songList').innerHTML=SONGS.map(s=>`
+  <div class="song" onclick="playYT('${s.q}','${s.title}')">
+    <span class="s-thumb">${s.emoji}</span>
+    <div class="s-info"><div class="s-title">${s.title}</div><div class="s-art">${s.artist}</div></div>
+    <span class="s-play">▶️</span>
+  </div>`).join('');
+function playYT(q,title){speak(`Ahora te pongo ${title}, Tata. ¡A disfrutar!`);window.open(`https://www.youtube.com/results?search_query=${q}`,'_blank');}
+function searchMusic(){const q=document.getElementById('mIn').value.trim();if(!q)return;speak(`Buscando ${q}, Tata. ¡Ya viene!`);window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,'_blank');}
 
 // ═══════════════════════════════
-//  FAMILY MEMORY PORTAL
+//  PORTAL — mensajes familia
 // ═══════════════════════════════
-// Uses localStorage to persist messages across sessions
-function getMemories() {
-  try { return JSON.parse(localStorage.getItem('hanna_memories') || '[]'); }
-  catch { return []; }
-}
-function saveMemory(quien, texto) {
-  const mems = getMemories();
-  mems.push({ quien, texto, fecha: new Date().toLocaleDateString('es-AR') });
-  localStorage.setItem('hanna_memories', JSON.stringify(mems));
-}
-function renderMemories() {
-  const mems = getMemories();
-  const ml = document.getElementById('memList');
-  if (!mems.length) {
-    ml.innerHTML = `<div style="text-align:center;color:var(--text-soft);padding:30px;font-size:16px">
-      Todavía no hay mensajes. ¡Sé el primero en dejarle uno a la Abuela Mercedes! 💕<br><br>
-      <small>(Para dejar mensajes, abrí el <a href="familia.html" style="color:var(--rose-deep)">Portal Familiar</a>)</small>
-    </div>`;
+function renderMemories(){
+  const mems=getMems();
+  const ml=document.getElementById('memList');
+  if(!mems.length){
+    ml.innerHTML=`<div style="text-align:center;color:var(--text-soft);padding:30px;font-size:16px">Todavía no hay mensajes.<br>¡La familia puede dejarlos en <strong>familia.html</strong>! 💕</div>`;
     return;
   }
-  ml.innerHTML = mems.slice().reverse().map(m=>`
+  ml.innerHTML=mems.slice().reverse().map(m=>`
     <div class="mem-item">
       <div class="mem-who">💌 ${m.quien}</div>
       <div class="mem-txt">${m.texto}</div>
-      <div class="mem-date">${m.fecha}</div>
+      <div class="mem-date">📅 ${m.fecha}</div>
     </div>`).join('');
+}
+
+// ═══════════════════════════════
+//  GEOLOCALIZACIÓN
+// ═══════════════════════════════
+function shareLocation(){
+  const status=document.getElementById('geoStatus');
+  const coords=document.getElementById('geoCoords');
+  const link=document.getElementById('geoLink');
+  status.className='geo-status warn';
+  status.textContent='⏳ Obteniendo ubicación…';
+  if(!navigator.geolocation){
+    status.className='geo-status err';
+    status.textContent='❌ Tu dispositivo no soporta GPS';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      const lat=pos.coords.latitude.toFixed(6);
+      const lon=pos.coords.longitude.toFixed(6);
+      const mapsUrl=`https://www.google.com/maps?q=${lat},${lon}`;
+      status.className='geo-status ok';
+      status.textContent=`✅ ¡Ubicación compartida! (precisión: ${Math.round(pos.coords.accuracy)}m)`;
+      coords.style.display='block';
+      coords.textContent=`Lat: ${lat} | Lon: ${lon}\n${new Date().toLocaleString('es-AR')}`;
+      link.href=mapsUrl;
+      // Guardar en localStorage para que los hijos puedan verlo
+      localStorage.setItem('tata_location',JSON.stringify({lat,lon,url:mapsUrl,ts:new Date().toISOString()}));
+      speak('¡Listo Tata! Ya pueden verte en el mapa. 📍');
+      toast('✅ Ubicación compartida con tu familia');
+    },
+    err=>{
+      status.className='geo-status err';
+      status.textContent='❌ No se pudo obtener la ubicación. ¿Permitiste el acceso?';
+    },
+    {enableHighAccuracy:true,timeout:10000}
+  );
 }
 
 // ═══════════════════════════════
 //  PLACEHOLDER GAMES
 // ═══════════════════════════════
-function goWordGame() {
-  speak('¡El juego de palabras ya viene, Abuela! 😊');
-  toast('🔤 ¡Próximamente!');
-}
-function goColorGame() {
-  speak('¡El juego de colores ya viene, Abuelita! 🎨');
-  toast('🎨 ¡Próximamente!');
-}
+function goWordGame(){speak('¡El juego de palabras ya viene, Tata! 😊');toast('🔤 ¡Próximamente!');}
+function goColorGame(){speak('¡El juego de colores ya viene, Tatita! 🎨');toast('🎨 ¡Próximamente!');}
 
 // ═══════════════════════════════
 //  TOAST
 // ═══════════════════════════════
-function toast(msg) {
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// ═══════════════════════════════
+//  PWA — instalar como app
+// ═══════════════════════════════
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    // Simple SW inline
+    const sw=`self.addEventListener('fetch',e=>{});`;
+    const blob=new Blob([sw],{type:'application/javascript'});
+    // navigator.serviceWorker.register(URL.createObjectURL(blob));
+  });
 }
 
 // ═══════════════════════════════
@@ -1074,12 +751,11 @@ window.addEventListener('load',()=>{
   setTimeout(()=>{
     const h=new Date().getHours();
     const g=h<12?'Buenos días':'Buenas tardes';
-    const isBday = new Date().getDate()===23 && new Date().getMonth()===3;
-    const msg = isBday
-      ? '¡Feliz cumpleaños Abuela Mercedes! ¡Hoy es tu día especial! Te quiero muchísimo 🎂🎉'
-      : `${g} Abuela Mercedes. Soy Hanna, tu nieta. ¡Qué alegría estar con vos hoy!`;
-    speak(msg);
-  }, 1200);
+    const isBday=new Date().getDate()===23&&new Date().getMonth()===3;
+    speak(isBday
+      ?'¡Feliz cumpleaños Tata! ¡Hoy es tu día especial! ¡Te quiero muchísimo! 🎂'
+      :`${g} Tatita. ¡Soy Hanna, tu nieta! ¡Qué alegría estar con vos hoy!`);
+  },1200);
 });
 </script>
 </body>
