@@ -5,10 +5,6 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).end();
 
-  const elKey = process.env.ELEVENLABS_API_KEY;
-  const voiceId = process.env.ELEVENLABS_VOICE_ID;
-  if (!elKey || !voiceId) return res.status(500).json({ error: 'Sin keys de voz' });
-
   try {
     const { text } = req.body;
     const clean = (text || '')
@@ -20,38 +16,44 @@ export default async function handler(req, res) {
 
     if (!clean) return res.status(400).json({ error: 'Texto vacío' });
 
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+    // Obtener token de Microsoft Edge TTS (gratis, sin key)
+    const tokenRes = await fetch('https://dev.microsofttranslator.com/apps/endpoint?api-version=1.0', {
+      headers: {
+        'Referer': 'https://www.bing.com/translator',
+        'User-Agent': 'Mozilla/5.0',
+      }
+    });
+    const tokenData = await tokenRes.json();
+    const token = tokenData.token;
+    const region = tokenData.region || 'eastus';
+
+    // Llamar a Azure TTS con el token
+    const ssml = `<speak version='1.0' xml:lang='es-AR'>
+      <voice xml:lang='es-AR' xml:gender='Female' name='es-AR-ElenaNeural'>
+        <prosody rate='+10%' pitch='+5%'>${clean}</prosody>
+      </voice>
+    </speak>`;
+
+    const ttsRes = await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'xi-api-key': elKey
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/ssml+xml',
+        'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
+        'User-Agent': 'Mozilla/5.0'
       },
-      body: JSON.stringify({
-        text: clean,
-        model_id: 'eleven_multilingual_v2',
-        voice_settings: {
-          stability: 0.4,
-          similarity_boost: 0.85,
-          style: 0.3,
-          use_speaker_boost: true
-        }
-      })
+      body: ssml
     });
 
-    if (!response.ok) {
-      const err = await response.text();
-      console.error('ElevenLabs error:', err);
-      return res.status(500).json({ error: err });
-    }
+    if (!ttsRes.ok) throw new Error(`TTS error: ${ttsRes.status}`);
 
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const buffer = Buffer.from(await ttsRes.arrayBuffer());
     res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Content-Length', buffer.length);
     res.status(200).send(buffer);
 
   } catch (err) {
-    console.error('Speak error:', err);
+    console.error('Speak error:', err.message);
     res.status(500).json({ error: err.message });
   }
 }
