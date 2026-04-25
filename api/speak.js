@@ -26,16 +26,19 @@ export default async function handler(req, res) {
     );
 
     const chunks = [];
-    const readable = await tts.toStream(clean, {
-      rate: '+8%',
-      pitch: '+15Hz',
-    });
 
     await new Promise((resolve, reject) => {
-      readable.on('data', chunk => chunks.push(chunk));
-      readable.on('end', resolve);
-      readable.on('error', reject);
+      tts.toStream(clean, {
+        rate: '+8%',
+        pitch: '+15Hz',
+      }).then(stream => {
+        stream.on('data', chunk => chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)));
+        stream.on('end', resolve);
+        stream.on('error', reject);
+      }).catch(reject);
     });
+
+    if (chunks.length === 0) throw new Error('No se generó audio');
 
     const buffer = Buffer.concat(chunks);
     res.setHeader('Content-Type', 'audio/mpeg');
@@ -43,7 +46,7 @@ export default async function handler(req, res) {
     res.status(200).send(buffer);
 
   } catch (err) {
-    console.error('Speak error:', err.message);
-    res.status(500).json({ error: err.message });
+    console.error('Speak error:', err);
+    res.status(500).json({ error: err.message || 'Error desconocido' });
   }
 }
