@@ -407,47 +407,52 @@ setInterval(()=>{
 },7000);
 
 // ═══════════════════════════════
-//  VOICE — mejorada, más alegre y rápida
+//  VOICE — Elena Argentina Neural via /api/speak
 // ═══════════════════════════════
-const synth=window.speechSynthesis;
-let voices=[];
-function loadVoices(){voices=synth.getVoices();}
-speechSynthesis.onvoiceschanged=loadVoices;
-setTimeout(loadVoices,500);
-
-// Limpiar texto antes de hablar
 function cleanForSpeech(text) {
   return text
     .replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
-    .replace(/[\u2600-\u27BF]/g, '')
-    .replace(/[*_~`#]/g, '')
+    .replace(/[\u{2600}-\u{27BF}]/gu, '')
+    .replace(/[*_~`#>\[\]]/g, '')
+    .replace(/\bHanna\b/gi, 'Jana')
     .replace(/\s+/g, ' ')
     .trim();
 }
 
-
+let speakQueue = Promise.resolve();
 function speak(text) {
-  const clean = cleanForSpeech(text)
-    .replace(/\bHanna\b/gi, 'Yana')
-    .replace(/\bJana\b/gi, 'Yana');
+  const clean = cleanForSpeech(text);
   if (!clean) return;
-  window.speechSynthesis.cancel();
   const sb = document.getElementById('speakBar');
-  const allVoices = window.speechSynthesis.getVoices();
-  const u = new SpeechSynthesisUtterance(clean);
-  u.lang = 'es-AR';
-  u.rate = 1.08;
-  u.pitch = 1.35;
-  u.volume = 1.0;
-  const fem = allVoices.find(v=>v.lang==='es-AR')
-    || allVoices.find(v=>v.lang.startsWith('es-') && v.name.toLowerCase().includes('female'))
-    || allVoices.find(v=>v.lang.startsWith('es'))
-    || null;
-  if (fem) u.voice = fem;
-  u.onstart = () => sb && sb.classList.add('show');
-  u.onend   = () => sb && sb.classList.remove('show');
-  u.onerror = () => sb && sb.classList.remove('show');
-  window.speechSynthesis.speak(u);
+  // Encolar para no superponer audios
+  speakQueue = speakQueue.then(async () => {
+    try {
+      if (sb) sb.classList.add('show');
+      const res = await fetch('/api/speak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: clean })
+      });
+      if (!res.ok) throw new Error('speak error ' + res.status);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      await new Promise((resolve, reject) => {
+        const audio = new Audio(url);
+        audio.onended = () => { URL.revokeObjectURL(url); resolve(); };
+        audio.onerror = reject;
+        audio.play().catch(reject);
+      });
+    } catch(e) {
+      console.error('Speak error:', e);
+      // Fallback navegador
+      const u = new SpeechSynthesisUtterance(clean);
+      u.lang = 'es-AR'; u.rate = 1.1; u.pitch = 1.3;
+      window.speechSynthesis.speak(u);
+      await new Promise(r => u.onend = r);
+    } finally {
+      if (sb) sb.classList.remove('show');
+    }
+  });
 }
 
 // ═══════════════════════════════
