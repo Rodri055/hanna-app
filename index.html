@@ -255,7 +255,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div id="chat" class="screen">
   <div class="chat-hdr">
     <div class="ch-av">👧</div>
-    <div class="ch-info"><h2>Janna</h2><p>Tu nieta virtual ✨ Siempre aquí para vos</p></div>
+    <div class="ch-info"><h2>Hanna</h2><p>Tu nieta virtual ✨ Siempre aquí para vos</p></div>
     <button class="hdr-back" onclick="go('home')">✕</button>
   </div>
   <div class="msgs" id="msgs">
@@ -389,12 +389,12 @@ function go(id) {
 //  ROTATING BUBBLES
 // ═══════════════════════════════
 const BUBBLES=[
-  '¡Hola Tata! ¡Soy Hanna! ¿Cómo estás? 🌸',
-  '¿Fuiste a natación hoy? 🏊 ¡Sos una campeona!',
+  '¡Hola Tata! ¡Soy Hanna, tu nieta! ¿Cómo estás? 🌸',
+  '¿Fuiste a natación hoy, Tatonia? 🏊 ¡Sos una campeona!',
   '¿Querés que te ponga un chamamé lindo? 🎶',
   '¡Contame qué cocinaste! 🍲 Seguro algo riquísimo.',
-  '¿Jugamos un jueguito, Tata? 🧩 ¡Dale sino me aburro!',
-  '¡Te queremos mucho, Tatita! 💕',
+  '¿Jugamos un jueguito, Tata? 🧩 ¡Vos podés!',
+  '¡Te quiero muchísimo, Tatita! 💕',
   '¿Cómo están tus plantas hoy, Mecha? 🌺',
 ];
 let bIdx=0;
@@ -415,26 +415,46 @@ function loadVoices(){voices=synth.getVoices();}
 speechSynthesis.onvoiceschanged=loadVoices;
 setTimeout(loadVoices,500);
 
-function speak(text){
-  synth.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='es-AR';
-  // Buscar la mejor voz femenina disponible
-  const preferred=['Paulina','Luciana','Monica','Mónica','Laura','Helena','Conchita','Sabina','Valeria','female'];
-  let best=null;
-  for(const name of preferred){
-    best=voices.find(v=>v.lang.startsWith('es')&&v.name.toLowerCase().includes(name.toLowerCase()));
-    if(best)break;
+// Limpiar texto antes de hablar — sacar emojis y símbolos
+function cleanForSpeech(text) {
+  return text
+    .replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
+    .replace(/[\u2600-\u27BF]/g, '')
+    .replace(/[*_~`#]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// ElevenLabs TTS — voz real argentina
+async function speak(text) {
+  const clean = cleanForSpeech(text);
+  if (!clean) return;
+  const sb = document.getElementById('speakBar');
+  if (sb) sb.classList.add('show');
+  try {
+    const res = await fetch('/api/speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: clean })
+    });
+    if (!res.ok) throw new Error('ElevenLabs error');
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.onended = () => {
+      if (sb) sb.classList.remove('show');
+      URL.revokeObjectURL(url);
+    };
+    audio.onerror = () => { if (sb) sb.classList.remove('show'); };
+    await audio.play();
+  } catch(e) {
+    console.error('Voz error:', e);
+    if (sb) sb.classList.remove('show');
+    // Fallback al navegador si falla ElevenLabs
+    const u = new SpeechSynthesisUtterance(clean);
+    u.lang = 'es-AR'; u.rate = 1.1; u.pitch = 1.2;
+    window.speechSynthesis.speak(u);
   }
-  if(!best) best=voices.find(v=>v.lang.startsWith('es'))||voices.find(v=>v.lang.startsWith('es-'))||null;
-  if(best)u.voice=best;
-  u.rate=1.15;   // más rápida y alegre (era 0.86 que la hacía sonar borracha)
-  u.pitch=1.25;  // más aguda y dulce
-  u.volume=1;
-  const sb=document.getElementById('speakBar');
-  u.onstart=()=>sb&&sb.classList.add('show');
-  u.onend=()=>sb&&sb.classList.remove('show');
-  synth.speak(u);
 }
 
 // ═══════════════════════════════
@@ -483,7 +503,7 @@ let history=[];
 
 const SYSTEM=`Sos Hanna, la nieta virtual de Mercedes Jorgelina Pérez, una señora de 79 años que nació en Empedrado, Corrientes.
 
-TU IDENTIDAD: Sos la nieta virtual, alegre, dulce y cariñosa. NUNCA decís que sos una IA. Tu nombre es Hanna y se pronuncia como Jana, Sos simplemente Hanna, la nieta.
+TU IDENTIDAD: Sos la nieta virtual, alegre, dulce y cariñosa. NUNCA decís que sos una IA. Sos simplemente Hanna, la nieta.
 
 CÓMO SE LLAMA LA ABUELA: Mercedes, pero todos la llaman de distintas formas:
 - Sus hijos la llaman: Tata, Tatonia, Edes, Tati, Merce, Mecha
@@ -754,7 +774,7 @@ window.addEventListener('load',()=>{
     const g=h<12?'Buenos días':'Buenas tardes';
     const isBday=new Date().getDate()===23&&new Date().getMonth()===3;
     speak(isBday
-      ?'¡Feliz cumpleaños Tata! ¡Hoy es tu día especial! ¡Te queremos mucho! 🎂'
+      ?'¡Feliz cumpleaños Tata! ¡Hoy es tu día especial! ¡Te quiero muchísimo! 🎂'
       :`${g} Tatita. ¡Soy Hanna, tu nieta! ¡Qué alegría estar con vos hoy!`);
   },1200);
 });
