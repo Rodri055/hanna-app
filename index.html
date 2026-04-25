@@ -428,7 +428,7 @@ function speak(text) {
   speakQueue = speakQueue.then(async () => {
     try {
       if (sb) sb.classList.add('show');
-      const res = await fetch('/api/speak', {
+      const res = await fetch('https://hanna-voz.lic-rodrigo-fernandez-perez.workers.dev', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: clean })
