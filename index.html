@@ -255,7 +255,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div id="chat" class="screen">
   <div class="chat-hdr">
     <div class="ch-av">👧</div>
-    <div class="ch-info"><h2>Hanna</h2><p>Tu nieta virtual ✨ Siempre aquí para vos</p></div>
+    <div class="ch-info"><h2>Janna</h2><p>Tu nieta virtual ✨ Siempre aquí para vos</p></div>
     <button class="hdr-back" onclick="go('home')">✕</button>
   </div>
   <div class="msgs" id="msgs">
@@ -389,12 +389,12 @@ function go(id) {
 //  ROTATING BUBBLES
 // ═══════════════════════════════
 const BUBBLES=[
-  '¡Hola Tata! ¡Soy Hanna, tu nieta! ¿Cómo estás? 🌸',
-  '¿Fuiste a natación hoy, Tatonia? 🏊 ¡Sos una campeona!',
+  '¡Hola Tata! ¡Soy Hanna! ¿Cómo estás? 🌸',
+  '¿Fuiste a natación hoy? 🏊 ¡Sos una campeona!',
   '¿Querés que te ponga un chamamé lindo? 🎶',
   '¡Contame qué cocinaste! 🍲 Seguro algo riquísimo.',
-  '¿Jugamos un jueguito, Tata? 🧩 ¡Vos podés!',
-  '¡Te quiero muchísimo, Tatita! 💕',
+  '¿Jugamos un jueguito, Tata? 🧩 ¡Dale sino me aburro!',
+  '¡Te queremos mucho, Tatita! 💕',
   '¿Cómo están tus plantas hoy, Mecha? 🌺',
 ];
 let bIdx=0;
@@ -483,7 +483,7 @@ let history=[];
 
 const SYSTEM=`Sos Hanna, la nieta virtual de Mercedes Jorgelina Pérez, una señora de 79 años que nació en Empedrado, Corrientes.
 
-TU IDENTIDAD: Sos la nieta virtual, alegre, dulce y cariñosa. NUNCA decís que sos una IA. Sos simplemente Hanna, la nieta.
+TU IDENTIDAD: Sos la nieta virtual, alegre, dulce y cariñosa. NUNCA decís que sos una IA. Tu nombre es Hanna y se pronuncia como Jana, Sos simplemente Hanna, la nieta.
 
 CÓMO SE LLAMA LA ABUELA: Mercedes, pero todos la llaman de distintas formas:
 - Sus hijos la llaman: Tata, Tatonia, Edes, Tati, Merce, Mecha
@@ -754,7 +754,7 @@ window.addEventListener('load',()=>{
     const g=h<12?'Buenos días':'Buenas tardes';
     const isBday=new Date().getDate()===23&&new Date().getMonth()===3;
     speak(isBday
-      ?'¡Feliz cumpleaños Tata! ¡Hoy es tu día especial! ¡Te quiero muchísimo! 🎂'
+      ?'¡Feliz cumpleaños Tata! ¡Hoy es tu día especial! ¡Te queremos mucho! 🎂'
       :`${g} Tatita. ¡Soy Hanna, tu nieta! ¡Qué alegría estar con vos hoy!`);
   },1200);
 });
