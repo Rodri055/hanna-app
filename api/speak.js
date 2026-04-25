@@ -1,3 +1,5 @@
+import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -17,42 +19,25 @@ export default async function handler(req, res) {
 
     if (!clean) return res.status(400).json({ error: 'Texto vacio' });
 
-    // Edge TTS — mismo servicio que usa Microsoft Edge, gratis
-    // Obtenemos el token de acceso primero
-    const tokenRes = await fetch('https://dev.microsofttranslator.com/apps/endpoint?api-version=1.0', {
-      headers: {
-        'Referer': 'https://www.bing.com/translator',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
-    });
-    const tokenData = await tokenRes.json();
-    const jwt = tokenData.token;
-    const region = tokenData.region || 'eastus';
+    const tts = new MsEdgeTTS();
+    await tts.setMetadata(
+      'es-AR-ElenaNeural',
+      OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3
+    );
 
-    // Generar audio con Azure Neural TTS
-    const ssml = `<speak version='1.0' xml:lang='es-AR'>
-      <voice name='es-AR-ElenaNeural'>
-        <prosody rate='+8%' pitch='+15Hz'>${clean.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</prosody>
-      </voice>
-    </speak>`;
-
-    const ttsRes = await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${jwt}`,
-        'Content-Type': 'application/ssml+xml',
-        'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
-        'User-Agent': 'Mozilla/5.0'
-      },
-      body: ssml
+    const chunks = [];
+    const readable = await tts.toStream(clean, {
+      rate: '+8%',
+      pitch: '+15Hz',
     });
 
-    if (!ttsRes.ok) {
-      const err = await ttsRes.text();
-      throw new Error(`TTS ${ttsRes.status}: ${err}`);
-    }
+    await new Promise((resolve, reject) => {
+      readable.on('data', chunk => chunks.push(chunk));
+      readable.on('end', resolve);
+      readable.on('error', reject);
+    });
 
-    const buffer = Buffer.from(await ttsRes.arrayBuffer());
+    const buffer = Buffer.concat(chunks);
     res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Content-Length', buffer.length);
     res.status(200).send(buffer);
