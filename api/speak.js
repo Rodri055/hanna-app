@@ -9,35 +9,37 @@ export default async function handler(req, res) {
     const { text } = req.body;
     const clean = (text || '')
       .replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
-      .replace(/[\u2600-\u27BF]/g, '')
-      .replace(/[*_~`#]/g, '')
+      .replace(/[\u{2600}-\u{27BF}]/gu, '')
+      .replace(/[*_~`#>\[\]]/g, '')
+      .replace(/\bHanna\b/gi, 'Jana')
       .replace(/\s+/g, ' ')
       .trim();
 
-    if (!clean) return res.status(400).json({ error: 'Texto vacío' });
+    if (!clean) return res.status(400).json({ error: 'Texto vacio' });
 
-    // Obtener token de Microsoft Edge TTS (gratis, sin key)
+    // Edge TTS — mismo servicio que usa Microsoft Edge, gratis
+    // Obtenemos el token de acceso primero
     const tokenRes = await fetch('https://dev.microsofttranslator.com/apps/endpoint?api-version=1.0', {
       headers: {
         'Referer': 'https://www.bing.com/translator',
-        'User-Agent': 'Mozilla/5.0',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }
     });
     const tokenData = await tokenRes.json();
-    const token = tokenData.token;
+    const jwt = tokenData.token;
     const region = tokenData.region || 'eastus';
 
-    // Llamar a Azure TTS con el token
+    // Generar audio con Azure Neural TTS
     const ssml = `<speak version='1.0' xml:lang='es-AR'>
-      <voice xml:lang='es-AR' xml:gender='Female' name='es-AR-ElenaNeural'>
-        <prosody rate='+10%' pitch='+5%'>${clean}</prosody>
+      <voice name='es-AR-ElenaNeural'>
+        <prosody rate='+8%' pitch='+15Hz'>${clean.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</prosody>
       </voice>
     </speak>`;
 
     const ttsRes = await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${jwt}`,
         'Content-Type': 'application/ssml+xml',
         'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
         'User-Agent': 'Mozilla/5.0'
@@ -45,7 +47,10 @@ export default async function handler(req, res) {
       body: ssml
     });
 
-    if (!ttsRes.ok) throw new Error(`TTS error: ${ttsRes.status}`);
+    if (!ttsRes.ok) {
+      const err = await ttsRes.text();
+      throw new Error(`TTS ${ttsRes.status}: ${err}`);
+    }
 
     const buffer = Buffer.from(await ttsRes.arrayBuffer());
     res.setHeader('Content-Type', 'audio/mpeg');
