@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fondo -->
+  <rect width="512" height="512" rx="100" fill="#FDF8F0"/>
+  <!-- Círculo central rose -->
+  <circle cx="256" cy="200" r="140" fill="#F2E8D9"/>
+  <!-- Familia de personas -->
+  <!-- Mamá (centro) -->
+  <circle cx="256" cy="155" r="38" fill="#C06840"/>
+  <ellipse cx="256" cy="240" rx="44" ry="52" fill="#C06840"/>
+  <!-- Hijo izquierda -->
+  <circle cx="155" cy="175" r="30" fill="#4A9B8E"/>
+  <ellipse cx="155" cy="248" rx="35" ry="44" fill="#4A9B8E"/>
+  <!-- Hija derecha -->
+  <circle cx="357" cy="175" r="30" fill="#E8956D"/>
+  <ellipse cx="357" cy="248" rx="35" ry="44" fill="#E8956D"/>
+  <!-- Nieto chico izquierda -->
+  <circle cx="100" cy="210" r="20" fill="#D4A043"/>
+  <ellipse cx="100" cy="262" rx="24" ry="30" fill="#D4A043"/>
+  <!-- Nieta chica derecha -->
+  <circle cx="412" cy="210" r="20" fill="#5A9E6A"/>
+  <ellipse cx="412" cy="262" rx="24" ry="30" fill="#5A9E6A"/>
+  <!-- Corazón arriba -->
+  <text x="256" y="110" text-anchor="middle" font-size="50">💌</text>
+  <!-- Texto -->
+  <text x="256" y="360" text-anchor="middle" font-family="Georgia,serif" font-size="38" font-weight="bold" fill="#C06840">Portal</text>
+  <text x="256" y="405" text-anchor="middle" font-family="Georgia,serif" font-size="38" font-weight="bold" fill="#C06840">Familiar</text>
+  <!-- Línea decorativa -->
+  <line x1="156" y1="420" x2="356" y2="420" stroke="#E8956D" stroke-width="3" stroke-linecap="round"/>
+  <text x="256" y="460" text-anchor="middle" font-family="Georgia,serif" font-size="26" fill="#7A6A55">de la Tata</text>
+</svg>
