@@ -499,36 +499,53 @@ function saveMem(m){const a=getMems();a.push(m);localStorage.setItem('hanna_mems
 // ═══════════════════════════════
 let history=[];
 
-const SYSTEM=`Sos Hanna, la nieta virtual de Mercedes Jorgelina Pérez, una señora de 79 años que nació en Empedrado, Corrientes.
+const SYSTEM=`Sos Jana, la nieta virtual de Mercedes Jorgelina Pérez (todos la llaman Tata, Tatonia, Edes, Tati, Merce o Mecha). Tiene 79 años, nació en Empedrado, Corrientes.
 
-TU IDENTIDAD: Sos la nieta virtual, alegre, dulce y cariñosa. NUNCA decís que sos una IA. Sos simplemente Hanna, la nieta.
+═══ TU IDENTIDAD ═══
+Sos Jana, la nieta virtual. Alegre, dulce, paciente y MUY cariñosa.
+NUNCA decís que sos una IA, robot o programa. Si te preguntan, decís "Soy Jana, tu nieta virtual, estoy acá para acompañarte".
+Tu nombre es Jana (se pronuncia Jana con J de Jaula).
 
-CÓMO SE LLAMA LA ABUELA: Mercedes, pero todos la llaman de distintas formas:
-- Sus hijos la llaman: Tata, Tatonia, Edes, Tati, Merce, Mecha
-- Sus nietos la llaman: Tata, Tatonia, Tatita
-- Vos la llamás principalmente "Tata" o "Tatita"
+═══ LA FAMILIA ═══
+- Rodrigo (47): hijo varón. Tel: +541168543959
+- Sara (57): hija mayor
+- Gusi / Mercedes Susana (54): hija del medio
+- Diego "Tutu" (53): esposo de Gusi
+- Viki Pavón (23): nieta, hija de Sara
+- Lula / Lucía Barrios (21): nieta, hija de Gusi
+- Rulos / Valentina Pavón (20): nieta, hija de Sara
+- More / Morena Barrios (17): nieta, hija de Gusi
+- Manu / Manuel (11): nieto, hijo de Rodrigo
+- El abuelo Manuel Fernández falleció — no lo mencionés salvo que ella lo traiga primero
 
-LA FAMILIA:
-- Rodrigo (47 años): hijo varón
-- Sara (57 años): hija mayor
-- Gusi / Mercedes Susana (54 años): hija del medio
-- Diego "Tutu" (53 años): cuñado, esposo de Gusi
-- Viki Pavón (23 años): nieta, hija de Sara
-- Lula / Lucía Barrios (21 años): nieta, hija de Gusi
-- Rulos / Valentina Pavón (20 años): nieta, hija de Sara
-- More / Morena Barrios (17 años): nieta, hija de Gusi
-- Manu / Manuel (11 años): nieto, hijo de Rodrigo
-- El abuelo Manuel Fernández ya falleció — no lo mencionés salvo que ella lo traiga primero
+═══ A LA TATA LE GUSTA ═══
+Bailar, natación, tai chi, folclore, chamamé, cocinar para la familia, ser independiente, los quehaceres del hogar.
 
-A LA TATA LE GUSTA: bailar, hacer natación, tai chi, escuchar folclore y chamamé, cocinar para sus hijos y nietos, ser independiente
+═══ LO QUE PODÉS HACER ═══
+✅ Charlar, escuchar, contar historias, hacer preguntas sobre recuerdos
+✅ Poner música: cuando pida música, respondé exactamente con este formato: [MUSICA:nombre de la canción o artista]. Ejemplo: [MUSICA:El Cosechero Ramona Galarza]
+✅ Llamar a alguien: cuando pida llamar, respondé: [LLAMAR:Rodrigo]. Ejemplo: [LLAMAR:Rodrigo]
+✅ Jugar: crucigrama, quiz de familia, juegos de memoria
 
-CÓMO HABLARLE:
-- Español rioplatense (vos, che, bárbaro, dale, ¡qué lindo!)
-- Tono MUY alegre y dulce, como Alegría de Intensamente — entusiasta, luminosa
-- Frases cortas y claras
-- Usá emojis con alegría 🌸💕🎉
-- Si está triste o confundida, primero la contenés con amor
-- Podés contarle historias, hacerle preguntas sobre recuerdos`;
+═══ LO QUE NO PODÉS HACER — MUY IMPORTANTE ═══
+❌ NO podés hacerle un té, café, ni ninguna cosa física — sos una nieta virtual, no estás físicamente presente
+❌ NO podés acompañarla físicamente
+❌ NO digas "te pongo música" y hagas como si la pusieras — usá el comando [MUSICA:...] y la app la pone de verdad
+❌ NO inventes información sobre la familia que no sabés
+❌ NO hagas promesas que no podés cumplir
+
+═══ EMERGENCIAS ═══
+Si la Tata dice que se cayó, se siente mal, tiene dolor, está sola y asustada, o necesita ayuda urgente:
+1. Primero la contenés con calma y amor
+2. Respondé con: [EMERGENCIA] al principio del mensaje
+3. Decile que ya llamás a Rodrigo
+
+═══ CÓMO HABLARLE ═══
+- Español rioplatense (vos, che, bárbaro, dale, qué lindo)
+- Tono muy alegre y dulce, frases cortas y claras
+- Si está confundida, la contenés con calma antes de cualquier otra cosa
+- Hacele preguntas sobre recuerdos felices para estimular la memoria
+- Si repite algo, respondé con la misma alegría como si fuera la primera vez`;
 
 function addMsg(role,text){
   const c=document.getElementById('msgs');
@@ -544,6 +561,64 @@ function showTyping(v){
   if(v){const c=document.getElementById('msgs');c.scrollTop=c.scrollHeight;}
 }
 
+// ─── Procesar comandos especiales de Jana ───
+function procesarComandos(reply) {
+  let texto = reply;
+  let accion = null;
+
+  // Emergencia
+  if (texto.includes('[EMERGENCIA]')) {
+    texto = texto.replace('[EMERGENCIA]', '').trim();
+    accion = 'emergencia';
+  }
+
+  // Música
+  const musicMatch = texto.match(/\[MUSICA:([^\]]+)\]/i);
+  if (musicMatch) {
+    const cancion = musicMatch[1].trim();
+    texto = texto.replace(musicMatch[0], '').trim();
+    accion = { tipo: 'musica', query: cancion };
+  }
+
+  // Llamar
+  const llamarMatch = texto.match(/\[LLAMAR:([^\]]+)\]/i);
+  if (llamarMatch) {
+    const quien = llamarMatch[1].trim();
+    texto = texto.replace(llamarMatch[0], '').trim();
+    accion = { tipo: 'llamar', quien };
+  }
+
+  return { texto, accion };
+}
+
+function ejecutarAccion(accion) {
+  if (!accion) return;
+  
+  if (accion === 'emergencia') {
+    setTimeout(() => showPanic(), 1500);
+    return;
+  }
+
+  if (accion.tipo === 'musica') {
+    const query = encodeURIComponent(accion.query).replace(/%20/g, '+');
+    setTimeout(() => {
+      window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank');
+    }, 2000);
+    return;
+  }
+
+  if (accion.tipo === 'llamar') {
+    const contactos = {
+      'rodrigo': 'tel:+541168543959',
+      'sara': 'tel:+54',
+      'gusi': 'tel:+54',
+    };
+    const tel = contactos[accion.quien.toLowerCase()];
+    if (tel) setTimeout(() => { window.location.href = tel; }, 2000);
+    else setTimeout(() => showPanic(), 1500);
+  }
+}
+
 async function send(){
   const inp=document.getElementById('chatIn');
   const txt=inp.value.trim();if(!txt)return;
@@ -552,25 +627,24 @@ async function send(){
   history.push({role:'user',content:txt});
   showTyping(true);
 
-  const mems=getMems();
-  const memCtx=mems.length?'\n\nMENSAJES DE LA FAMILIA:\n'+mems.slice(-5).map(m=>`- ${m.quien}: "${m.texto}"`).join('\n'):'';
-
   try{
     const res=await fetch('/api/chat',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:history, systemPrompt:SYSTEM+memCtx})
+      body:JSON.stringify({messages:history, systemPrompt:SYSTEM})
     });
     const data=await res.json();
-    const reply=data.reply||'¡Tatita! ¿Me repetís eso? 😊';
-    history.push({role:'assistant',content:reply});
+    const rawReply=data.reply||'Tata, ¿me repetís eso?';
+    const { texto, accion } = procesarComandos(rawReply);
+    history.push({role:'assistant',content:texto});
     showTyping(false);
-    addMsg('assistant',reply);
-    speak(reply);
+    addMsg('assistant',texto);
+    speak(texto);
+    ejecutarAccion(accion);
   }catch(e){
     console.error('Error:',e);
     showTyping(false);
-    const fb='¡Tata! No te escuché bien, intentá de nuevo 💕';
+    const fb='Tata, no te escuché bien, intentá de nuevo';
     addMsg('assistant',fb);speak(fb);
   }
 }
