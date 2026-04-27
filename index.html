@@ -407,8 +407,11 @@ setInterval(()=>{
 },7000);
 
 // ═══════════════════════════════
-//  VOICE — Elena Argentina Neural via /api/speak
+//  VOICE — Elena Argentina Neural
+//  Intenta servidor local (Termux) primero, luego fallback navegador
 // ═══════════════════════════════
+const VOZ_LOCAL = 'http://192.168.0.111:8765/speak'; // IP del celular con Termux
+
 function cleanForSpeech(text) {
   return text
     .replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
@@ -419,20 +422,33 @@ function cleanForSpeech(text) {
     .trim();
 }
 
+function fallbackVoz(clean) {
+  const u = new SpeechSynthesisUtterance(clean);
+  u.lang = 'es-AR'; u.rate = 1.1; u.pitch = 1.3;
+  const sb = document.getElementById('speakBar');
+  u.onstart = () => sb && sb.classList.add('show');
+  u.onend = () => sb && sb.classList.remove('show');
+  window.speechSynthesis.speak(u);
+}
+
 let speakQueue = Promise.resolve();
 function speak(text) {
   const clean = cleanForSpeech(text);
   if (!clean) return;
   const sb = document.getElementById('speakBar');
-  // Encolar para no superponer audios
   speakQueue = speakQueue.then(async () => {
     try {
       if (sb) sb.classList.add('show');
-      const res = await fetch('https://hanna-voz.lic-rodrigo-fernandez-perez.workers.dev', {
+      // Intentar servidor local Termux con timeout corto
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 3000);
+      const res = await fetch(VOZ_LOCAL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: clean })
+        body: JSON.stringify({ text: clean }),
+        signal: controller.signal
       });
+      clearTimeout(timeout);
       if (!res.ok) throw new Error('speak error ' + res.status);
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
@@ -443,12 +459,9 @@ function speak(text) {
         audio.play().catch(reject);
       });
     } catch(e) {
-      console.error('Speak error:', e);
-      // Fallback navegador
-      const u = new SpeechSynthesisUtterance(clean);
-      u.lang = 'es-AR'; u.rate = 1.1; u.pitch = 1.3;
-      window.speechSynthesis.speak(u);
-      await new Promise(r => u.onend = r);
+      console.log('Voz local no disponible, usando navegador:', e.message);
+      fallbackVoz(clean);
+      await new Promise(r => setTimeout(r, clean.length * 60));
     } finally {
       if (sb) sb.classList.remove('show');
     }
