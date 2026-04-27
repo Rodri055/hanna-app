@@ -1,83 +1,120 @@
+const SUPABASE_URL = 'https://tddrewgssppdhxgkgzxf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-';
+
+async function getUltimaMemoria() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/conversaciones?order=fecha.desc&limit=1`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const data = await res.json();
+    return data?.[0] || null;
+  } catch { return null; }
+}
+
+async function guardarMemoria(resumen, emociones, temas) {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/conversaciones`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ resumen, emociones, temas })
+    });
+  } catch (e) { console.error('Error guardando memoria:', e); }
+}
+
+async function getMensajesFamilia() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/memorias_familia?order=fecha.desc&limit=10`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    return await res.json();
+  } catch { return []; }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ reply: 'Metodo no permitido' });
 
-  const path = req.url || '';
+  const groqKey = process.env.GROQ_API_KEY;
+  if (!groqKey) return res.status(500).json({ reply: 'Sin key de chat' });
 
-  // ── /api/chat ──
-  if (path.includes('chat')) {
-    if (req.method !== 'POST') return res.status(405).json({ reply: 'Metodo no permitido' });
-    const groqKey = process.env.GROQ_API_KEY;
-    if (!groqKey) return res.status(500).json({ reply: 'Sin key de chat' });
+  try {
+    const { messages, systemPrompt } = req.body;
 
-    try {
-      const { messages, systemPrompt } = req.body;
-      const groqMessages = [
-        { role: 'system', content: systemPrompt },
-        ...messages.map(m => ({ role: m.role, content: m.content }))
+    // Traer memoria de última conversación
+    const ultimaMem = await getUltimaMemoria();
+    const memsFamilia = await getMensajesFamilia();
+
+    let contextoMemoria = '';
+    if (ultimaMem) {
+      const fecha = new Date(ultimaMem.fecha).toLocaleDateString('es-AR');
+      contextoMemoria += `\n\nÚLTIMA CONVERSACIÓN (${fecha}): ${ultimaMem.resumen}`;
+      if (ultimaMem.emociones) contextoMemoria += `\nEstado emocional: ${ultimaMem.emociones}`;
+      if (ultimaMem.temas) contextoMemoria += `\nTemas hablados: ${ultimaMem.temas}`;
+    }
+
+    if (memsFamilia.length > 0) {
+      contextoMemoria += '\n\nMENSAJES RECIENTES DE LA FAMILIA:\n';
+      contextoMemoria += memsFamilia.map(m => `- ${m.quien}: "${m.texto}"`).join('\n');
+    }
+
+    const systemFinal = systemPrompt + contextoMemoria;
+
+    const groqMessages = [
+      { role: 'system', content: systemFinal },
+      ...messages.map(m => ({ role: m.role, content: m.content }))
+    ];
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${groqKey}`
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: groqMessages,
+        max_tokens: 400,
+        temperature: 0.9
+      })
+    });
+
+    const data = await response.json();
+    if (data.error) return res.status(500).json({ reply: data.error.message });
+    const text = data.choices?.[0]?.message?.content || 'Tatita, repetís eso?';
+
+    // Cada 5 mensajes guardar resumen de la conversación
+    if (messages.length % 5 === 0 && messages.length > 0) {
+      const resumenMessages = [
+        { role: 'system', content: 'Resumí en 2 oraciones esta conversación. Indicá el estado emocional de la Tata y los temas principales. Respondé en formato JSON: {"resumen":"...","emociones":"...","temas":"..."}' },
+        ...messages.slice(-6).map(m => ({ role: m.role, content: m.content }))
       ];
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      const resumenRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${groqKey}` },
-        body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: groqMessages, max_tokens: 400, temperature: 0.9 })
+        body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: resumenMessages, max_tokens: 200, temperature: 0.3 })
       });
-      const data = await response.json();
-      if (data.error) return res.status(500).json({ reply: data.error.message });
-      const text = data.choices?.[0]?.message?.content || 'Tatita, repetís eso?';
-      res.status(200).json({ reply: text });
-    } catch (err) {
-      res.status(500).json({ reply: 'Tata, intentá de nuevo' });
+      const resumenData = await resumenRes.json();
+      const resumenText = resumenData.choices?.[0]?.message?.content || '';
+      try {
+        const parsed = JSON.parse(resumenText.replace(/```json|```/g, '').trim());
+        await guardarMemoria(parsed.resumen, parsed.emociones, parsed.temas);
+      } catch { await guardarMemoria(resumenText, '', ''); }
     }
-    return;
+
+    res.status(200).json({ reply: text });
+
+  } catch (err) {
+    console.error('Error:', err.message);
+    res.status(500).json({ reply: 'Tata, intentá de nuevo' });
   }
-
-  // ── /api/speak ──
-  if (path.includes('speak')) {
-    if (req.method !== 'POST') return res.status(405).end();
-    const elKey = process.env.ELEVENLABS_API_KEY;
-    const voiceId = process.env.ELEVENLABS_VOICE_ID;
-    if (!elKey || !voiceId) return res.status(500).json({ error: 'Sin key de voz' });
-
-    try {
-      const { text } = req.body;
-      // Limpiar emojis y caracteres especiales
-      const clean = text.replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
-                        .replace(/[\u2600-\u27BF]/g, '')
-                        .replace(/[*_~`#]/g, '')
-                        .trim();
-
-      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'xi-api-key': elKey
-        },
-        body: JSON.stringify({
-          text: clean,
-          model_id: 'eleven_multilingual_v2',
-          voice_settings: { stability: 0.4, similarity_boost: 0.85, style: 0.3, use_speaker_boost: true }
-        })
-      });
-
-      if (!response.ok) {
-        const err = await response.text();
-        console.error('ElevenLabs error:', err);
-        return res.status(500).json({ error: err });
-      }
-
-      const arrayBuffer = await response.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      res.setHeader('Content-Type', 'audio/mpeg');
-      res.setHeader('Content-Length', buffer.length);
-      res.status(200).send(buffer);
-    } catch (err) {
-      console.error('Speak error:', err);
-      res.status(500).json({ error: err.message });
-    }
-    return;
-  }
-
-  res.status(404).json({ error: 'Not found' });
 }
