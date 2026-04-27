@@ -284,29 +284,49 @@ function selectTipo(btn) {
   tipoSel = btn.dataset.tipo;
 }
 
-function getMemories() {
-  try { return JSON.parse(localStorage.getItem('hanna_memories')||'[]'); } catch { return []; }
-}
-function setMemories(m) { localStorage.setItem('hanna_memories', JSON.stringify(m)); }
+const SUPABASE_URL = 'https://tddrewgssppdhxgkgzxf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-';
 
-function guardarMemoria() {
+async function getMemories() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/memorias_familia?order=fecha.desc`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    return await res.json();
+  } catch { return []; }
+}
+
+async function guardarMemoria() {
   const quien = document.getElementById('fQuien').value;
   const texto = document.getElementById('fTexto').value.trim();
   if (!quien) { toast('❗ Seleccioná tu nombre'); return; }
   if (!texto) { toast('❗ Escribí algo primero'); return; }
-  const mems = getMemories();
-  mems.push({
-    quien, texto, tipo: tipoSel,
-    fecha: new Date().toLocaleDateString('es-AR'),
-    ts: Date.now()
-  });
-  setMemories(mems);
-  document.getElementById('fTexto').value = '';
-  toast('✅ ¡Guardado! Hanna ya lo sabe 💕');
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/memorias_familia`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        quien, texto, tipo: tipoSel,
+        fecha: new Date().toLocaleDateString('es-AR')
+      })
+    });
+    document.getElementById('fTexto').value = '';
+    toast('✅ ¡Guardado! Jana ya lo sabe 💕');
+    if (document.getElementById('panel-mensajes').classList.contains('show')) {
+      updateStats(); renderMemList('');
+    }
+  } catch(e) {
+    toast('❌ Error al guardar, intentá de nuevo');
+  }
 }
 
-function updateStats() {
-  const mems = getMemories();
+async function updateStats() {
+  const mems = await getMemories();
   const tipos = [...new Set(mems.map(m=>m.tipo))].length;
   const personas = [...new Set(mems.map(m=>m.quien))].length;
   document.getElementById('statsGrid').innerHTML = `
@@ -324,22 +344,22 @@ function filterMems(tipo, btn) {
   renderMemList(tipo);
 }
 
-function renderMemList(tipo) {
-  let mems = getMemories();
-  if (tipo) mems = mems.filter(m=>m.tipo===tipo);
-  mems = mems.slice().reverse();
+async function renderMemList(tipo) {
   const el = document.getElementById('memListPortal');
+  el.innerHTML = '<div class="empty">Cargando... ⏳</div>';
+  let mems = await getMemories();
+  if (tipo) mems = mems.filter(m=>m.tipo===tipo);
   if (!mems.length) {
     el.innerHTML = `<div class="empty">Todavía no hay mensajes de este tipo.<br>¡Sé el primero en escribir! ✏️</div>`;
     return;
   }
-  el.innerHTML = mems.map((m,i)=>`
+  el.innerHTML = mems.map((m)=>`
     <div class="mem-item tipo-${m.tipo||'amor'}">
       <div class="mem-top">
         <div class="mem-who">💌 ${m.quien}</div>
         <div style="display:flex;align-items:center;gap:6px">
           <span class="mem-tag">${TIPOS[m.tipo]||m.tipo}</span>
-          <button class="mem-del" onclick="delMem(${m.ts})" title="Eliminar">🗑️</button>
+          <button class="mem-del" onclick="delMem('${m.id}')" title="Eliminar">🗑️</button>
         </div>
       </div>
       <div class="mem-txt">${m.texto}</div>
@@ -347,13 +367,17 @@ function renderMemList(tipo) {
     </div>`).join('');
 }
 
-function delMem(ts) {
+async function delMem(id) {
   if (!confirm('¿Eliminar este mensaje?')) return;
-  let mems = getMemories().filter(m=>m.ts!==ts);
-  setMemories(mems);
-  updateStats();
-  renderMemList(currentFilter);
-  toast('🗑️ Mensaje eliminado');
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/memorias_familia?id=eq.${id}`, {
+      method: 'DELETE',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    updateStats();
+    renderMemList(currentFilter);
+    toast('🗑️ Mensaje eliminado');
+  } catch { toast('❌ Error al eliminar'); }
 }
 
 function copyUrl() {
