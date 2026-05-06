@@ -154,7 +154,8 @@ body::before{
   <div class="tabs">
     <button class="tab active" onclick="switchTab('escribir',this)">✏️ Escribir</button>
     <button class="tab" onclick="switchTab('mensajes',this)">📋 Mensajes</button>
-    <button class="tab" onclick="switchTab('ayuda',this)">❓ Cómo funciona</button>
+    <button class="tab" onclick="switchTab('ubicacion',this)">📍 Ubicación</button>
+    <button class="tab" onclick="switchTab('ayuda',this)">❓ Ayuda</button>
   </div>
 
   <!-- PANEL: ESCRIBIR -->
@@ -211,6 +212,23 @@ body::before{
       <button class="filter-btn" onclick="filterMems('dato',this)">💡 Datos</button>
     </div>
     <div id="memListPortal"></div>
+  </div>
+
+  <!-- PANEL: UBICACIÓN -->
+  <div class="panel" id="panel-ubicacion">
+    <div class="card">
+      <h2>📍 ¿Dónde está la Tata?</h2>
+      <div id="geoStatus" style="text-align:center;padding:20px;color:#7A6A55;font-size:15px">Cargando…</div>
+      <div id="geoInfo" style="display:none">
+        <div style="background:#C6F0CB;border-radius:14px;padding:16px;margin-bottom:14px">
+          <div style="font-size:14px;font-weight:800;color:#1A5C22;margin-bottom:4px">✅ Última ubicación registrada</div>
+          <div style="font-size:13px;color:#2A7A30" id="geoFecha"></div>
+        </div>
+        <a id="geoLink" href="#" target="_blank" style="display:block;background:#4A9B8E;color:white;border-radius:14px;padding:16px;text-align:center;font-weight:800;font-size:16px;text-decoration:none;margin-bottom:10px">🗺️ Ver en Google Maps</a>
+        <div style="background:#F2E8D9;border-radius:14px;padding:14px;font-size:13px;color:#7A6A55;line-height:1.6">💡 La ubicación se actualiza automáticamente cada vez que la Tata usa la app.</div>
+      </div>
+      <button onclick="cargarUbicacion()" style="width:100%;background:#4A6FA8;color:white;border:none;border-radius:14px;padding:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;margin-top:14px">🔄 Actualizar</button>
+    </div>
   </div>
 
   <!-- PANEL: AYUDA -->
@@ -273,12 +291,33 @@ const TIPOS = {
   humor:'😄 Gracioso',gustos:'🎵 Gustos',dato:'💡 Dato para Hanna'
 };
 
+async function cargarUbicacion() {
+  const status = document.getElementById('geoStatus');
+  const info = document.getElementById('geoInfo');
+  if(status) { status.style.display='block'; status.textContent='Cargando ubicación…'; }
+  if(info) info.style.display='none';
+  try {
+    const res = await fetch('https://tddrewgssppdhxgkgzxf.supabase.co/rest/v1/ubicacion_tata?order=ts.desc&limit=1', {
+      headers: { apikey: 'sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-', Authorization: 'Bearer sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-' }
+    });
+    const data = await res.json();
+    if (!data?.length) { if(status) status.textContent='📡 Sin ubicación guardada aún. La Tata debe abrir la app.'; return; }
+    const loc = data[0];
+    const fecha = new Date(loc.ts).toLocaleString('es-AR');
+    document.getElementById('geoFecha').textContent='📅 '+fecha;
+    document.getElementById('geoLink').href=loc.url;
+    if(status) status.style.display='none';
+    if(info) info.style.display='block';
+  } catch(e) { if(status) status.textContent='❌ Error al cargar. Intentá de nuevo.'; }
+}
+
 function switchTab(id, btn) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
   btn.classList.add('active');
   document.getElementById('panel-'+id).classList.add('show');
   if (id==='mensajes') { updateStats(); renderMemList(''); }
+  if (id==='ubicacion') { cargarUbicacion(); }
   if (id==='ayuda') document.getElementById('urlDisplay').textContent = window.location.href.replace('familia.html','index.html');
 }
 
