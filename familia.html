@@ -3,166 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal Familiar — Jana</title>
-<link rel="manifest" href="/familia-manifest.json">
-<meta name="theme-color" content="#C06840">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Portal Jana">
+<title>Portal Familiar — Hanna</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{
-  --cream:#FDF8F0;--warm:#F2E8D9;--rose:#E8956D;--rose-soft:#F5C4A8;
-  --rose-deep:#C06840;--teal:#4A9B8E;--gold:#D4A043;--green:#5A9E6A;
-  --text:#2E2418;--text-soft:#7A6A55;--white:#FFFFFF;--shadow:rgba(46,36,24,0.13);
+:root {
+  --cream:#FDF8F0;--warm:#F2E8D9;--rose:#E8956D;--rose-deep:#C06840;
+  --teal:#4A9B8E;--gold:#D4A043;--green:#5A9E6A;--blue:#4A6FA8;
+  --text:#2E2418;--text-soft:#7A6A55;--white:#FFFFFF;--shadow:rgba(46,36,24,0.12);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
-body::before{
-  content:'';position:fixed;inset:0;
-  background:radial-gradient(ellipse 60% 40% at 10% 10%,#F5C4A822,transparent 60%),
-             radial-gradient(ellipse 50% 50% at 90% 80%,#9FD4CC22,transparent 60%);
-  pointer-events:none;z-index:0;
-}
-.container{max-width:560px;margin:0 auto;padding:20px 16px 40px;position:relative;z-index:1}
-
-/* HEADER */
-.hdr{text-align:center;margin-bottom:28px}
-.hdr .logo{font-size:52px;margin-bottom:6px}
-.hdr h1{font-family:'Lora',serif;font-size:28px;color:var(--rose-deep);margin-bottom:4px}
-.hdr p{font-size:15px;color:var(--text-soft);line-height:1.5}
-.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--rose-deep);font-weight:700;font-size:14px;text-decoration:none;margin-bottom:20px}
-
-/* TABS */
-.tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--warm);border-radius:14px;padding:5px}
-.tab{
-  flex:1;padding:11px;border:none;border-radius:10px;cursor:pointer;
-  font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;
-  background:transparent;color:var(--text-soft);transition:all 0.2s;
-}
-.tab.active{background:var(--white);color:var(--rose-deep);box-shadow:0 2px 8px var(--shadow)}
-
-/* PANELS */
-.panel{display:none}.panel.show{display:block}
-
-/* FORM */
-.card{background:var(--white);border-radius:20px;padding:22px;box-shadow:0 4px 16px var(--shadow);margin-bottom:16px}
-.card h2{font-size:18px;font-weight:900;margin-bottom:14px;color:var(--text)}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:13px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
-.field select,.field textarea,.field input{
-  width:100%;background:var(--cream);border:2px solid var(--warm);border-radius:12px;
-  padding:13px 16px;font-family:'Nunito',sans-serif;font-size:16px;color:var(--text);outline:none;
-  transition:border-color 0.2s;
-}
-.field select:focus,.field textarea:focus,.field input:focus{border-color:var(--rose)}
-.field textarea{min-height:110px;resize:none}
-.save-btn{
-  width:100%;background:linear-gradient(135deg,var(--rose-deep),#A04030);
-  color:white;border:none;border-radius:14px;padding:17px;
-  font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;
-  transition:transform 0.15s;
-}
-.save-btn:active{transform:scale(0.97)}
-
-/* CATEGORIES */
-.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.cat-btn{
-  background:var(--cream);border:2px solid var(--warm);border-radius:14px;
-  padding:14px 10px;cursor:pointer;text-align:center;
-  font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text-soft);
-  transition:all 0.2s;
-}
-.cat-btn.sel{background:var(--rose-soft);border-color:var(--rose);color:var(--rose-deep)}
-.cat-btn .ci{font-size:26px;display:block;margin-bottom:4px}
-
-/* MEMORIES LIST */
-.mem-filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
-.filter-btn{
-  background:var(--warm);border:none;border-radius:50px;padding:7px 16px;
-  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text-soft);
-  cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0;
-}
-.filter-btn.active{background:var(--rose-deep);color:white}
-.mem-item{
-  background:var(--white);border-radius:16px;padding:16px;
-  box-shadow:0 3px 10px var(--shadow);margin-bottom:10px;
-  border-left:5px solid var(--rose-soft);
-  animation:fadeUp 0.3s ease;
-}
-.mem-item.tipo-recuerdo{border-left-color:var(--gold)}
-.mem-item.tipo-salud{border-left-color:var(--teal)}
-.mem-item.tipo-humor{border-left-color:var(--green)}
-.mem-item.tipo-gustos{border-left-color:var(--rose)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.mem-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.mem-who{font-size:12px;font-weight:800;color:var(--rose-deep);text-transform:uppercase;letter-spacing:0.5px}
-.mem-tag{
-  font-size:11px;font-weight:700;padding:3px 10px;border-radius:50px;
-  background:var(--warm);color:var(--text-soft);
-}
-.mem-txt{font-size:15px;line-height:1.55;color:var(--text)}
-.mem-date{font-size:11px;color:var(--text-soft);margin-top:6px}
-.mem-del{background:none;border:none;color:var(--text-soft);cursor:pointer;font-size:16px;padding:2px 6px}
-.empty{text-align:center;color:var(--text-soft);padding:30px;font-size:15px;line-height:1.6}
-
-/* GUIDE */
-.guide-item{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--warm)}
-.guide-item:last-child{border-bottom:none}
-.guide-num{
-  width:34px;height:34px;background:var(--rose-deep);color:white;border-radius:50%;
-  font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.guide-txt h3{font-size:16px;font-weight:800;margin-bottom:3px}
-.guide-txt p{font-size:14px;color:var(--text-soft);line-height:1.45}
-.copy-url{
-  background:var(--cream);border:2px solid var(--warm);border-radius:12px;
-  padding:12px 16px;font-family:'Nunito',sans-serif;font-size:14px;
-  color:var(--teal);font-weight:700;word-break:break-all;margin:8px 0;cursor:pointer;
-  display:block;text-align:center;
-}
-.copy-url:hover{background:var(--warm)}
-
-/* TOAST */
-.toast{
-  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  background:var(--text);color:white;border-radius:50px;padding:12px 24px;
-  font-size:15px;font-weight:700;z-index:300;opacity:0;transition:opacity 0.3s;
-  pointer-events:none;white-space:nowrap;
-}
-.toast.show{opacity:1}
-
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.stat-box{background:var(--white);border-radius:14px;padding:14px;text-align:center;box-shadow:0 3px 10px var(--shadow)}
-.stat-num{font-size:28px;font-weight:900;color:var(--rose-deep)}
-.stat-lbl{font-size:11px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 0% 0%,#F5C4A822,transparent 60%),radial-gradient(ellipse 60% 40% at 100% 100%,#9FD4CC22,transparent 60%);pointer-events:none;z-index:0;}
+.container{max-width:560px;margin:0 auto;padding:20px 16px 40px;position:relative;z-index:1;}
+.hdr{text-align:center;margin-bottom:24px;}
+.hdr .logo{font-size:52px;margin-bottom:6px;}
+.hdr h1{font-family:'Lora',serif;font-size:28px;color:var(--rose-deep);margin-bottom:4px;}
+.hdr p{font-size:15px;color:var(--text-soft);line-height:1.5;}
+.tabs{display:flex;gap:5px;margin-bottom:20px;background:var(--warm);border-radius:14px;padding:5px;overflow-x:auto;}
+.tab{flex:1;min-width:80px;padding:10px 8px;border:none;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;background:transparent;color:var(--text-soft);transition:all 0.2s;white-space:nowrap;}
+.tab.active{background:var(--white);color:var(--rose-deep);box-shadow:0 2px 8px var(--shadow);}
+.panel{display:none;}.panel.show{display:block;}
+.card{background:var(--white);border-radius:20px;padding:22px;box-shadow:0 4px 16px var(--shadow);margin-bottom:16px;}
+.card h2{font-size:18px;font-weight:900;margin-bottom:14px;color:var(--text);}
+.card p{font-size:14px;color:var(--text-soft);line-height:1.6;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:13px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.field select,.field textarea,.field input{width:100%;background:var(--cream);border:2px solid var(--warm);border-radius:12px;padding:13px 16px;font-family:'Nunito',sans-serif;font-size:16px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.field select:focus,.field textarea:focus,.field input:focus{border-color:var(--rose);}
+.field textarea{min-height:100px;resize:none;}
+.btn{width:100%;border:none;border-radius:14px;padding:16px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:transform 0.15s;}
+.btn:active{transform:scale(0.97);}
+.btn-rose{background:linear-gradient(135deg,var(--rose-deep),#A04030);color:white;}
+.btn-teal{background:var(--teal);color:white;}
+.btn-blue{background:var(--blue);color:white;}
+.btn-gold{background:var(--gold);color:white;}
+.tipos{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.tipo-btn{background:var(--cream);border:2px solid var(--warm);border-radius:12px;padding:12px 8px;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text-soft);transition:all 0.2s;}
+.tipo-btn.sel{background:#F5C4A8;border-color:var(--rose);color:var(--rose-deep);}
+.tipo-btn span{display:block;font-size:24px;margin-bottom:4px;}
+.geo-ok{background:#C6F0CB;border-radius:14px;padding:16px;margin-bottom:14px;}
+.geo-ok .titulo{font-size:14px;font-weight:800;color:#1A5C22;margin-bottom:4px;}
+.geo-ok .fecha{font-size:13px;color:#2A7A30;}
+.geo-warn{background:#FFE8C0;border-radius:14px;padding:16px;font-size:14px;color:#8A5A00;font-weight:700;margin-bottom:14px;}
+.geo-link{display:block;background:var(--teal);color:white;border-radius:14px;padding:14px;text-align:center;font-weight:800;font-size:15px;text-decoration:none;margin-bottom:10px;}
+.geo-info{background:var(--warm);border-radius:12px;padding:14px;font-size:13px;color:var(--text-soft);line-height:1.6;}
+.resumen-item{background:var(--cream);border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid var(--rose);}
+.resumen-item .fecha{font-size:11px;color:var(--text-soft);font-weight:700;margin-bottom:4px;}
+.resumen-item .texto{font-size:14px;color:var(--text);line-height:1.5;}
+.resumen-item .emocion{font-size:12px;color:var(--teal);font-weight:700;margin-top:4px;}
+.agenda-item{background:var(--cream);border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid var(--gold);display:flex;align-items:center;gap:12px;}
+.agenda-item .ico{font-size:28px;}
+.agenda-item .info{flex:1;}
+.agenda-item .titulo{font-size:15px;font-weight:800;color:var(--text);}
+.agenda-item .det{font-size:13px;color:var(--text-soft);}
+.agenda-item .del-btn{background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-soft);}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:white;border-radius:50px;padding:12px 24px;font-size:15px;font-weight:700;z-index:300;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+.empty{text-align:center;color:var(--text-soft);padding:30px;font-size:15px;line-height:1.6;}
 </style>
 </head>
 <body>
 <div class="container">
-
-  <a class="back-link" href="index.html">← Volver a Hanna</a>
-
   <div class="hdr">
     <div class="logo">💌</div>
     <h1>Portal Familiar</h1>
-    <p>Dejale mensajes, recuerdos y cositas lindas<br>a la <strong>Abuela Mercedes</strong> 💕</p>
+    <p>Conectados con la <strong>Tata Mercedes</strong> a través de Hanna 💕</p>
   </div>
 
-  <!-- TABS -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('escribir',this)">✏️ Escribir</button>
-    <button class="tab" onclick="switchTab('mensajes',this)">📋 Mensajes</button>
+    <button class="tab active" onclick="switchTab('mensaje',this)">✏️ Mensaje</button>
     <button class="tab" onclick="switchTab('ubicacion',this)">📍 Ubicación</button>
-    <button class="tab" onclick="switchTab('ayuda',this)">❓ Ayuda</button>
+    <button class="tab" onclick="switchTab('resumen',this)">🧠 Hanna hoy</button>
+    <button class="tab" onclick="switchTab('agenda',this)">📅 Agenda</button>
   </div>
 
-  <!-- PANEL: ESCRIBIR -->
-  <div class="panel show" id="panel-escribir">
+  <!-- MENSAJE -->
+  <div class="panel show" id="panel-mensaje">
     <div class="card">
-      <h2>📝 Nuevo mensaje para la Abuela</h2>
-
+      <h2>✏️ Dejar un mensaje para Hanna</h2>
+      <p style="margin-bottom:16px">Hanna lee estos mensajes antes de charlar con la Tata y los usa para conocerla mejor cada día.</p>
       <div class="field">
         <label>¿Quién escribe?</label>
         <select id="fQuien">
@@ -178,262 +98,223 @@ body::before{
           <option>Manu (tu nieto)</option>
         </select>
       </div>
-
       <div class="field">
         <label>Tipo de mensaje</label>
-        <div class="cat-grid">
-          <button class="cat-btn sel" data-tipo="amor" onclick="selectTipo(this)"><span class="ci">💕</span>Cariño</button>
-          <button class="cat-btn" data-tipo="recuerdo" onclick="selectTipo(this)"><span class="ci">📸</span>Recuerdo</button>
-          <button class="cat-btn" data-tipo="salud" onclick="selectTipo(this)"><span class="ci">🌿</span>Salud / Día</button>
-          <button class="cat-btn" data-tipo="humor" onclick="selectTipo(this)"><span class="ci">😄</span>Algo gracioso</button>
-          <button class="cat-btn" data-tipo="gustos" onclick="selectTipo(this)"><span class="ci">🎵</span>Sus gustos</button>
-          <button class="cat-btn" data-tipo="dato" onclick="selectTipo(this)"><span class="ci">💡</span>Dato para Hanna</button>
+        <div class="tipos">
+          <button class="tipo-btn sel" data-tipo="novedad" onclick="selTipo(this)"><span>📰</span>Novedad del día</button>
+          <button class="tipo-btn" data-tipo="salud" onclick="selTipo(this)"><span>🌿</span>Salud / Estado</button>
+          <button class="tipo-btn" data-tipo="recuerdo" onclick="selTipo(this)"><span>📸</span>Recuerdo</button>
+          <button class="tipo-btn" data-tipo="cariño" onclick="selTipo(this)"><span>💕</span>Cariño</button>
+          <button class="tipo-btn" data-tipo="gustos" onclick="selTipo(this)"><span>🎵</span>Gustos / Temas</button>
+          <button class="tipo-btn" data-tipo="dato" onclick="selTipo(this)"><span>💡</span>Dato para Hanna</button>
         </div>
       </div>
-
       <div class="field">
         <label>Tu mensaje</label>
-        <textarea id="fTexto" placeholder="Escribí aquí lo que quieras decirle a la Abuela, o un dato que Hanna deba saber sobre ella..."></textarea>
+        <textarea id="fTexto" placeholder="Ej: Hoy mamá estuvo con buen humor, salió a caminar al parque. Le gustó mucho la visita de Viki ayer."></textarea>
       </div>
-
-      <button class="save-btn" onclick="guardarMemoria()">💾 Guardar mensaje</button>
+      <button class="btn btn-rose" onclick="guardarMensaje()">💾 Enviar a Hanna</button>
+    </div>
+    <div class="card" style="background:#F0F9FF;">
+      <h2 style="color:var(--teal)">💡 Ideas de qué escribir</h2>
+      <p>
+        ✅ "Hoy mamá estuvo con buen humor, hizo empanadas"<br>
+        ✅ "Le encanta que la llamen a las 10 de la mañana"<br>
+        ✅ "Esta semana no fue a natación, estaba resfriada"<br>
+        ✅ "Se acuerda perfectamente de sus nietas"<br>
+        ✅ "Le gusta la canción Merceditas del chamamé"<br>
+        ✅ "Hoy la vi triste, extraña al abuelo"
+      </p>
     </div>
   </div>
 
-  <!-- PANEL: MENSAJES -->
-  <div class="panel" id="panel-mensajes">
-    <div class="stats-grid" id="statsGrid"></div>
-    <div class="mem-filters">
-      <button class="filter-btn active" onclick="filterMems('',this)">Todos</button>
-      <button class="filter-btn" onclick="filterMems('amor',this)">💕 Cariño</button>
-      <button class="filter-btn" onclick="filterMems('recuerdo',this)">📸 Recuerdos</button>
-      <button class="filter-btn" onclick="filterMems('salud',this)">🌿 Salud</button>
-      <button class="filter-btn" onclick="filterMems('humor',this)">😄 Humor</button>
-      <button class="filter-btn" onclick="filterMems('dato',this)">💡 Datos</button>
-    </div>
-    <div id="memListPortal"></div>
-  </div>
-
-  <!-- PANEL: UBICACIÓN -->
+  <!-- UBICACIÓN -->
   <div class="panel" id="panel-ubicacion">
     <div class="card">
       <h2>📍 ¿Dónde está la Tata?</h2>
-      <div id="geoStatus" style="text-align:center;padding:20px;color:#7A6A55;font-size:15px">Cargando…</div>
-      <div id="geoInfo" style="display:none">
-        <div style="background:#C6F0CB;border-radius:14px;padding:16px;margin-bottom:14px">
-          <div style="font-size:14px;font-weight:800;color:#1A5C22;margin-bottom:4px">✅ Última ubicación registrada</div>
-          <div style="font-size:13px;color:#2A7A30" id="geoFecha"></div>
-        </div>
-        <a id="geoLink" href="#" target="_blank" style="display:block;background:#4A9B8E;color:white;border-radius:14px;padding:16px;text-align:center;font-weight:800;font-size:16px;text-decoration:none;margin-bottom:10px">🗺️ Ver en Google Maps</a>
-        <div style="background:#F2E8D9;border-radius:14px;padding:14px;font-size:13px;color:#7A6A55;line-height:1.6">💡 La ubicación se actualiza automáticamente cada vez que la Tata usa la app.</div>
-      </div>
-      <button onclick="cargarUbicacion()" style="width:100%;background:#4A6FA8;color:white;border:none;border-radius:14px;padding:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;margin-top:14px">🔄 Actualizar</button>
+      <div id="geoContent"><div class="geo-warn">⏳ Cargando ubicación…</div></div>
+      <button class="btn btn-blue" onclick="cargarUbicacion()" style="margin-top:12px">🔄 Actualizar</button>
+    </div>
+    <div class="card" style="background:var(--warm);">
+      <p>📡 La ubicación se actualiza automáticamente cuando la Tata usa Hanna. También puede compartirla manualmente desde la app.</p>
     </div>
   </div>
 
-  <!-- PANEL: AYUDA -->
-  <div class="panel" id="panel-ayuda">
+  <!-- RESUMEN -->
+  <div class="panel" id="panel-resumen">
     <div class="card">
-      <h2>¿Cómo funciona Hanna? 🤔</h2>
-      <div class="guide-item">
-        <div class="guide-num">1</div>
-        <div class="guide-txt">
-          <h3>La Abuela usa la app</h3>
-          <p>Mercedes abre Hanna en su celular y puede charlar, jugar, escuchar música y pedir ayuda con el botón rojo.</p>
-        </div>
-      </div>
-      <div class="guide-item">
-        <div class="guide-num">2</div>
-        <div class="guide-txt">
-          <h3>La familia escribe aquí</h3>
-          <p>Cada uno de ustedes puede dejar mensajes, recuerdos o datos sobre la Abuela. Hanna los lee y los usa para conocerla mejor.</p>
-        </div>
-      </div>
-      <div class="guide-item">
-        <div class="guide-num">3</div>
-        <div class="guide-txt">
-          <h3>Hanna aprende cada día</h3>
-          <p>Cuantos más datos carguen, más cercana y personal será Hanna. Puede mencionar: "¡Rodrigo me contó que hoy fuiste a natación!"</p>
-        </div>
-      </div>
-      <div class="guide-item">
-        <div class="guide-num">4</div>
-        <div class="guide-txt">
-          <h3>Compartí el link del portal</h3>
-          <p>Mandáselo a toda la familia por WhatsApp:</p>
-          <span class="copy-url" onclick="copyUrl()" id="urlDisplay">← cargando URL →</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>💡 Ideas de qué escribir</h2>
-      <div style="font-size:14px;color:var(--text-soft);line-height:1.8">
-        ✅ "Hoy mamá estuvo con buen humor, hizo empanadas"<br>
-        ✅ "Le encanta la canción Merceditas, la pone seguido"<br>
-        ✅ "Esta semana no fue a natación porque estuvo resfriada"<br>
-        ✅ "Recuerda perfectamente el nombre de sus nietas"<br>
-        ✅ "Le gusta que la llamen a las 10 de la mañana"<br>
-        ✅ "Hoy cumple años, ¡celebramosla con torta!"<br>
-        ✅ "Se acuerda mucho del papá Manuel, a veces lo menciona"
-      </div>
+      <h2>🧠 ¿Cómo estuvo la Tata?</h2>
+      <p style="margin-bottom:16px">Hanna guarda un resumen de cada conversación para aprender y recordar.</p>
+      <div id="resumenContent"><div class="empty">Cargando…</div></div>
     </div>
   </div>
 
+  <!-- AGENDA -->
+  <div class="panel" id="panel-agenda">
+    <div class="card">
+      <h2>📅 Agenda de la Tata</h2>
+      <p style="margin-bottom:16px">Hanna le recuerda estos eventos a la Tata en la conversación del día.</p>
+      <div class="field">
+        <label>Tipo de recordatorio</label>
+        <select id="agendaTipo">
+          <option value="medico">🏥 Turno médico</option>
+          <option value="cumple">🎂 Cumpleaños</option>
+          <option value="visita">👨‍👩‍👧 Visita familiar</option>
+          <option value="medicacion">💊 Medicación</option>
+          <option value="actividad">🏊 Actividad (natación, tai chi)</option>
+          <option value="otro">📌 Otro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Descripción</label>
+        <input type="text" id="agendaTexto" placeholder="Ej: Turno con el cardiólogo a las 10hs">
+      </div>
+      <div class="field">
+        <label>Fecha</label>
+        <input type="date" id="agendaFecha">
+      </div>
+      <button class="btn btn-gold" onclick="guardarAgenda()" style="margin-bottom:20px">📅 Agregar recordatorio</button>
+      <div id="agendaContent"><div class="empty">Cargando…</div></div>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-let tipoSel = 'amor';
-const TIPOS = {
-  amor:'💕 Cariño',recuerdo:'📸 Recuerdo',salud:'🌿 Salud',
-  humor:'😄 Gracioso',gustos:'🎵 Gustos',dato:'💡 Dato para Hanna'
-};
-
-async function cargarUbicacion() {
-  const status = document.getElementById('geoStatus');
-  const info = document.getElementById('geoInfo');
-  if(status) { status.style.display='block'; status.textContent='Cargando ubicación…'; }
-  if(info) info.style.display='none';
-  try {
-    const res = await fetch('https://tddrewgssppdhxgkgzxf.supabase.co/rest/v1/ubicacion_tata?order=ts.desc&limit=1', {
-      headers: { apikey: 'sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-', Authorization: 'Bearer sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-' }
-    });
-    const data = await res.json();
-    if (!data?.length) { if(status) status.textContent='📡 Sin ubicación guardada aún. La Tata debe abrir la app.'; return; }
-    const loc = data[0];
-    const fecha = new Date(loc.ts).toLocaleString('es-AR');
-    document.getElementById('geoFecha').textContent='📅 '+fecha;
-    document.getElementById('geoLink').href=loc.url;
-    if(status) status.style.display='none';
-    if(info) info.style.display='block';
-  } catch(e) { if(status) status.textContent='❌ Error al cargar. Intentá de nuevo.'; }
-}
+const SUPABASE_URL = 'https://tddrewgssppdhxgkgzxf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-';
+const HEADERS = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' };
+let tipoSel = 'novedad';
 
 function switchTab(id, btn) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
   btn.classList.add('active');
-  document.getElementById('panel-'+id).classList.add('show');
-  if (id==='mensajes') { updateStats(); renderMemList(''); }
-  if (id==='ubicacion') { cargarUbicacion(); }
-  if (id==='ayuda') document.getElementById('urlDisplay').textContent = window.location.href.replace('familia.html','index.html');
+  document.getElementById('panel-' + id).classList.add('show');
+  if (id === 'ubicacion') cargarUbicacion();
+  if (id === 'resumen') cargarResumen();
+  if (id === 'agenda') cargarAgenda();
 }
 
-function selectTipo(btn) {
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('sel'));
+function selTipo(btn) {
+  document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
   tipoSel = btn.dataset.tipo;
 }
 
-const SUPABASE_URL = 'https://tddrewgssppdhxgkgzxf.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-';
-
-async function getMemories() {
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/memorias_familia?order=fecha.desc`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-    });
-    return await res.json();
-  } catch { return []; }
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-async function guardarMemoria() {
+async function guardarMensaje() {
   const quien = document.getElementById('fQuien').value;
   const texto = document.getElementById('fTexto').value.trim();
   if (!quien) { toast('❗ Seleccioná tu nombre'); return; }
   if (!texto) { toast('❗ Escribí algo primero'); return; }
   try {
-    await fetch(`${SUPABASE_URL}/rest/v1/memorias_familia`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/memorias_familia`, {
       method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({
-        quien, texto, tipo: tipoSel,
-        fecha: new Date().toLocaleDateString('es-AR')
-      })
+      headers: { ...HEADERS, Prefer: 'return=minimal' },
+      body: JSON.stringify({ quien, texto, tipo: tipoSel, fecha: new Date().toLocaleDateString('es-AR') })
     });
+    if (!res.ok) throw new Error(await res.text());
     document.getElementById('fTexto').value = '';
-    toast('✅ ¡Guardado! Jana ya lo sabe 💕');
-    if (document.getElementById('panel-mensajes').classList.contains('show')) {
-      updateStats(); renderMemList('');
-    }
-  } catch(e) {
-    toast('❌ Error al guardar, intentá de nuevo');
-  }
+    toast('✅ ¡Hanna ya lo sabe! Gracias 💕');
+  } catch(e) { toast('❌ Error al enviar. Intentá de nuevo.'); }
 }
 
-async function updateStats() {
-  const mems = await getMemories();
-  const tipos = [...new Set(mems.map(m=>m.tipo))].length;
-  const personas = [...new Set(mems.map(m=>m.quien))].length;
-  document.getElementById('statsGrid').innerHTML = `
-    <div class="stat-box"><div class="stat-num">${mems.length}</div><div class="stat-lbl">Mensajes</div></div>
-    <div class="stat-box"><div class="stat-num">${personas}</div><div class="stat-lbl">Familiares</div></div>
-    <div class="stat-box"><div class="stat-num">${tipos}</div><div class="stat-lbl">Categorías</div></div>
-  `;
-}
-
-let currentFilter = '';
-function filterMems(tipo, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  currentFilter = tipo;
-  renderMemList(tipo);
-}
-
-async function renderMemList(tipo) {
-  const el = document.getElementById('memListPortal');
-  el.innerHTML = '<div class="empty">Cargando... ⏳</div>';
-  let mems = await getMemories();
-  if (tipo) mems = mems.filter(m=>m.tipo===tipo);
-  if (!mems.length) {
-    el.innerHTML = `<div class="empty">Todavía no hay mensajes de este tipo.<br>¡Sé el primero en escribir! ✏️</div>`;
-    return;
-  }
-  el.innerHTML = mems.map((m)=>`
-    <div class="mem-item tipo-${m.tipo||'amor'}">
-      <div class="mem-top">
-        <div class="mem-who">💌 ${m.quien}</div>
-        <div style="display:flex;align-items:center;gap:6px">
-          <span class="mem-tag">${TIPOS[m.tipo]||m.tipo}</span>
-          <button class="mem-del" onclick="delMem('${m.id}')" title="Eliminar">🗑️</button>
-        </div>
-      </div>
-      <div class="mem-txt">${m.texto}</div>
-      <div class="mem-date">📅 ${m.fecha}</div>
-    </div>`).join('');
-}
-
-async function delMem(id) {
-  if (!confirm('¿Eliminar este mensaje?')) return;
+async function cargarUbicacion() {
+  const el = document.getElementById('geoContent');
+  el.innerHTML = '<div class="geo-warn">⏳ Cargando…</div>';
   try {
-    await fetch(`${SUPABASE_URL}/rest/v1/memorias_familia?id=eq.${id}`, {
-      method: 'DELETE',
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/ubicacion_tata?order=ts.desc&limit=1`, { headers: HEADERS });
+    const data = await res.json();
+    if (!data?.length) {
+      el.innerHTML = '<div class="geo-warn">📡 Sin ubicación guardada aún. La Tata debe abrir Hanna para que se registre automáticamente.</div>';
+      return;
+    }
+    const loc = data[0];
+    const fecha = new Date(loc.ts).toLocaleString('es-AR');
+    el.innerHTML = `
+      <div class="geo-ok">
+        <div class="titulo">✅ Última ubicación registrada</div>
+        <div class="fecha">📅 ${fecha}</div>
+      </div>
+      <a class="geo-link" href="${loc.url}" target="_blank">🗺️ Ver en Google Maps</a>
+      <div class="geo-info">💡 Si la Tata se movió, pedile que abra Hanna o que toque "Compartir ubicación" en la app.</div>
+    `;
+  } catch(e) { el.innerHTML = '<div class="geo-warn">❌ Error al cargar. Intentá de nuevo.</div>'; }
+}
+
+async function cargarResumen() {
+  const el = document.getElementById('resumenContent');
+  el.innerHTML = '<div class="empty">Cargando…</div>';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/conversaciones?order=fecha.desc&limit=10`, { headers: HEADERS });
+    const data = await res.json();
+    if (!data?.length) {
+      el.innerHTML = '<div class="empty">Hanna todavía no guardó conversaciones. Cuando la Tata charle con ella, aparecerá el resumen acá.</div>';
+      return;
+    }
+    el.innerHTML = data.map(c => {
+      const fecha = new Date(c.fecha).toLocaleString('es-AR');
+      return `<div class="resumen-item">
+        <div class="fecha">📅 ${fecha}</div>
+        <div class="texto">${c.resumen || 'Sin resumen'}</div>
+        ${c.emociones ? `<div class="emocion">Estado: ${c.emociones}</div>` : ''}
+      </div>`;
+    }).join('');
+  } catch(e) { el.innerHTML = '<div class="empty">Error al cargar.</div>'; }
+}
+
+async function guardarAgenda() {
+  const tipo = document.getElementById('agendaTipo').value;
+  const texto = document.getElementById('agendaTexto').value.trim();
+  const fecha = document.getElementById('agendaFecha').value;
+  if (!texto) { toast('❗ Escribí el recordatorio'); return; }
+  if (!fecha) { toast('❗ Elegí una fecha'); return; }
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/agenda_tata`, {
+      method: 'POST',
+      headers: { ...HEADERS, Prefer: 'return=minimal' },
+      body: JSON.stringify({ tipo, texto, fecha, activo: true })
     });
-    updateStats();
-    renderMemList(currentFilter);
-    toast('🗑️ Mensaje eliminado');
-  } catch { toast('❌ Error al eliminar'); }
+    if (!res.ok) throw new Error(await res.text());
+    document.getElementById('agendaTexto').value = '';
+    document.getElementById('agendaFecha').value = '';
+    toast('✅ Recordatorio guardado. Hanna lo mencionará.');
+    cargarAgenda();
+  } catch(e) { toast('❌ Error. Primero creá la tabla agenda_tata en Supabase.'); console.error(e); }
 }
 
-function copyUrl() {
-  const url = window.location.href.replace('familia.html','index.html');
-  navigator.clipboard.writeText(url).then(()=>toast('📋 ¡Link copiado!')).catch(()=>{
-    prompt('Copiá este link:', url);
-  });
+async function cargarAgenda() {
+  const el = document.getElementById('agendaContent');
+  el.innerHTML = '<div class="empty">Cargando…</div>';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/agenda_tata?order=fecha.asc&activo=eq.true`, { headers: HEADERS });
+    const data = await res.json();
+    if (!data?.length) { el.innerHTML = '<div class="empty">No hay recordatorios cargados todavía.</div>'; return; }
+    const iconos = { medico:'🏥', cumple:'🎂', visita:'👨‍👩‍👧', medicacion:'💊', actividad:'🏊', otro:'📌' };
+    el.innerHTML = data.map(a => `
+      <div class="agenda-item">
+        <div class="ico">${iconos[a.tipo]||'📌'}</div>
+        <div class="info">
+          <div class="titulo">${a.texto}</div>
+          <div class="det">📅 ${new Date(a.fecha+'T00:00:00').toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})}</div>
+        </div>
+        <button class="del-btn" onclick="borrarAgenda('${a.id}')">🗑️</button>
+      </div>`).join('');
+  } catch(e) { el.innerHTML = '<div class="empty">Creá la tabla agenda_tata en Supabase primero.</div>'; }
 }
 
-function toast(msg) {
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+async function borrarAgenda(id) {
+  if (!confirm('¿Eliminar este recordatorio?')) return;
+  await fetch(`${SUPABASE_URL}/rest/v1/agenda_tata?id=eq.${id}`, { method:'DELETE', headers:HEADERS });
+  toast('🗑️ Eliminado');
+  cargarAgenda();
 }
 </script>
 </body>
