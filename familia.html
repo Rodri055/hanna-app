@@ -5,178 +5,425 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portal Familiar — Hanna</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --cream:#FDF8F0;--warm:#F2E8D9;--rose:#E8956D;--rose-deep:#C06840;
-  --teal:#4A9B8E;--gold:#D4A043;--green:#5A9E6A;--blue:#4A6FA8;
-  --text:#2E2418;--text-soft:#7A6A55;--white:#FFFFFF;--shadow:rgba(46,36,24,0.12);
+:root{
+  --bg0:#05060B; --bg1:#111827; --bg2:#1B2333;
+  --glass:rgba(255,255,255,0.055); --glass-strong:rgba(255,255,255,0.09);
+  --border:rgba(255,255,255,0.11); --border-soft:rgba(255,255,255,0.07);
+  --coral:#FF7A59; --coral-deep:#E85A3D; --pink:#FF5C8A; --peach:#FFB98A;
+  --teal:#2FD9A8; --gold:#F6B93B; --blue:#5B8DEF;
+  --text:#F3F1EC; --text-soft:#A8AFC0; --text-dim:#6E7690;
+  --radius:18px; --radius-lg:26px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 0% 0%,#F5C4A822,transparent 60%),radial-gradient(ellipse 60% 40% at 100% 100%,#9FD4CC22,transparent 60%);pointer-events:none;z-index:0;}
-.container{max-width:560px;margin:0 auto;padding:20px 16px 40px;position:relative;z-index:1;}
-.hdr{text-align:center;margin-bottom:24px;}
-.hdr .logo{font-size:52px;margin-bottom:6px;}
-.hdr h1{font-family:'Lora',serif;font-size:28px;color:var(--rose-deep);margin-bottom:4px;}
-.hdr p{font-size:15px;color:var(--text-soft);line-height:1.5;}
-.tabs{display:flex;gap:5px;margin-bottom:20px;background:var(--warm);border-radius:14px;padding:5px;overflow-x:auto;}
-.tab{flex:1;min-width:80px;padding:10px 8px;border:none;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;background:transparent;color:var(--text-soft);transition:all 0.2s;white-space:nowrap;}
-.tab.active{background:var(--white);color:var(--rose-deep);box-shadow:0 2px 8px var(--shadow);}
-.panel{display:none;}.panel.show{display:block;}
-.card{background:var(--white);border-radius:20px;padding:22px;box-shadow:0 4px 16px var(--shadow);margin-bottom:16px;}
-.card h2{font-size:18px;font-weight:900;margin-bottom:14px;color:var(--text);}
-.card p{font-size:14px;color:var(--text-soft);line-height:1.6;}
-.field{margin-bottom:14px;}
-.field label{display:block;font-size:13px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
-.field select,.field textarea,.field input{width:100%;background:var(--cream);border:2px solid var(--warm);border-radius:12px;padding:13px 16px;font-family:'Nunito',sans-serif;font-size:16px;color:var(--text);outline:none;transition:border-color 0.2s;}
-.field select:focus,.field textarea:focus,.field input:focus{border-color:var(--rose);}
-.field textarea{min-height:100px;resize:none;}
-.btn{width:100%;border:none;border-radius:14px;padding:16px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:transform 0.15s;}
-.btn:active{transform:scale(0.97);}
-.btn-rose{background:linear-gradient(135deg,var(--rose-deep),#A04030);color:white;}
-.btn-teal{background:var(--teal);color:white;}
-.btn-blue{background:var(--blue);color:white;}
-.btn-gold{background:var(--gold);color:white;}
-.tipos{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.tipo-btn{background:var(--cream);border:2px solid var(--warm);border-radius:12px;padding:12px 8px;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text-soft);transition:all 0.2s;}
-.tipo-btn.sel{background:#F5C4A8;border-color:var(--rose);color:var(--rose-deep);}
-.tipo-btn span{display:block;font-size:24px;margin-bottom:4px;}
-.geo-ok{background:#C6F0CB;border-radius:14px;padding:16px;margin-bottom:14px;}
-.geo-ok .titulo{font-size:14px;font-weight:800;color:#1A5C22;margin-bottom:4px;}
-.geo-ok .fecha{font-size:13px;color:#2A7A30;}
-.geo-warn{background:#FFE8C0;border-radius:14px;padding:16px;font-size:14px;color:#8A5A00;font-weight:700;margin-bottom:14px;}
-.geo-link{display:block;background:var(--teal);color:white;border-radius:14px;padding:14px;text-align:center;font-weight:800;font-size:15px;text-decoration:none;margin-bottom:10px;}
-.geo-info{background:var(--warm);border-radius:12px;padding:14px;font-size:13px;color:var(--text-soft);line-height:1.6;}
-.resumen-item{background:var(--cream);border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid var(--rose);}
-.resumen-item .fecha{font-size:11px;color:var(--text-soft);font-weight:700;margin-bottom:4px;}
-.resumen-item .texto{font-size:14px;color:var(--text);line-height:1.5;}
-.resumen-item .emocion{font-size:12px;color:var(--teal);font-weight:700;margin-top:4px;}
-.agenda-item{background:var(--cream);border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid var(--gold);display:flex;align-items:center;gap:12px;}
-.agenda-item .ico{font-size:28px;}
-.agenda-item .info{flex:1;}
-.agenda-item .titulo{font-size:15px;font-weight:800;color:var(--text);}
-.agenda-item .det{font-size:13px;color:var(--text-soft);}
-.agenda-item .del-btn{background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-soft);}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:white;border-radius:50px;padding:12px 24px;font-size:15px;font-weight:700;z-index:300;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
-.toast.show{opacity:1;}
-.empty{text-align:center;color:var(--text-soft);padding:30px;font-size:15px;line-height:1.6;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;
+  background:
+    radial-gradient(ellipse 55% 40% at 15% 8%, rgba(255,122,89,0.10), transparent 60%),
+    radial-gradient(ellipse 50% 45% at 90% 15%, rgba(91,141,239,0.08), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(47,217,168,0.06), transparent 60%),
+    linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 55%, var(--bg2) 100%);
+  background-attachment:fixed;
+  overflow-x:hidden;
+}
+.orb{position:fixed;border-radius:50%;filter:blur(70px);pointer-events:none;z-index:0;opacity:0.55;}
+.orb1{width:480px;height:480px;top:-140px;left:-120px;background:radial-gradient(circle,rgba(255,122,89,0.35),transparent 70%);}
+.orb2{width:420px;height:420px;top:120px;right:-160px;background:radial-gradient(circle,rgba(91,141,239,0.28),transparent 70%);animation:float 14s ease-in-out infinite;}
+.orb3{width:520px;height:520px;bottom:-220px;left:30%;background:radial-gradient(circle,rgba(47,217,168,0.18),transparent 70%);}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(30px);}}
+@media (prefers-reduced-motion:reduce){.orb2{animation:none;}*{scroll-behavior:auto!important;}}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 80px;position:relative;z-index:1;}
+
+/* NAV */
+nav{
+  position:sticky;top:14px;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;margin:18px auto 0;max-width:1180px;padding:12px 22px;border-radius:100px;
+  background:var(--glass-strong);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+  border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.35);
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;white-space:nowrap;}
+.brand .heart{width:30px;height:30px;flex:none;}
+.brand small{display:block;font-size:11px;font-weight:500;color:var(--text-dim);letter-spacing:.3px;}
+.navlinks{display:flex;gap:4px;flex-wrap:wrap;}
+.navlinks a{
+  color:var(--text-soft);text-decoration:none;font-size:14px;font-weight:600;padding:9px 14px;
+  border-radius:100px;transition:all .25s ease;scroll-margin-top:90px;
+}
+.navlinks a:hover{color:var(--text);background:rgba(255,255,255,0.08);}
+@media (max-width:820px){.navlinks{display:none;}}
+.nav-right{display:flex;align-items:center;gap:14px;flex:none;}
+.bell{position:relative;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.06);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.bell .dot{position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--coral);
+  box-shadow:0 0 0 2px rgba(17,24,39,0.9);}
+.nav-avatar{width:38px;height:38px;border-radius:50%;flex:none;overflow:hidden;border:1.5px solid rgba(255,255,255,0.18);}
+.nav-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+
+/* HERO */
+.hero{
+  margin-top:34px;min-height:380px;border-radius:32px;position:relative;overflow:hidden;
+  display:grid;grid-template-columns:1.1fr 0.9fr;align-items:center;gap:24px;
+  background:linear-gradient(135deg, rgba(255,122,89,0.10), rgba(91,141,239,0.06) 60%, rgba(255,255,255,0.03));
+  border:1px solid var(--border-soft);padding:52px 48px;
+}
+@media (max-width:860px){.hero{grid-template-columns:1fr;text-align:center;padding:44px 26px;min-height:auto;}}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--peach);
+  background:rgba(255,122,89,0.12);border:1px solid rgba(255,122,89,0.25);padding:6px 14px;border-radius:100px;margin-bottom:20px;}
+.hero h1{font-size:clamp(32px,4.2vw,48px);font-weight:800;line-height:1.12;letter-spacing:-.5px;}
+.hero h1 .accent{background:linear-gradient(120deg,var(--coral),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero p.lead{margin-top:14px;font-size:17px;color:var(--text-soft);max-width:480px;line-height:1.55;}
+@media (max-width:860px){.hero p.lead{margin-inline:auto;}}
+.quote-card{
+  margin-top:26px;display:inline-flex;gap:12px;align-items:flex-start;padding:16px 20px;border-radius:var(--radius);
+  background:var(--glass);border:1px solid var(--border);max-width:420px;text-align:left;
+}
+.quote-card svg{flex:none;margin-top:2px;}
+.quote-card p{font-size:14px;color:var(--text-soft);line-height:1.5;}
+.quote-card strong{color:var(--text);}
+.hero-visual{position:relative;height:340px;display:flex;align-items:center;justify-content:center;}
+.glow-orb{position:absolute;border-radius:50%;filter:blur(2px);}
+.embrace{position:relative;z-index:2;}
+.photo-frame{
+  position:relative;width:100%;height:100%;border-radius:28px;overflow:hidden;
+  background-image:var(--hero-photo, none);background-size:cover;background-position:center;
+  display:flex;align-items:center;justify-content:center;
+}
+.photo-frame::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top, var(--bg2) 0%, transparent 45%),
+             linear-gradient(120deg, rgba(255,122,89,0.12), transparent 55%);
+  pointer-events:none;
+}
+.photo-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-dim);
+  background:rgba(0,0,0,0.35);padding:5px 12px;border-radius:100px;z-index:3;white-space:nowrap;}
+
+/* QUICK ACTIONS */
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px;}
+@media (max-width:760px){.actions{grid-template-columns:repeat(2,1fr);}}
+.action{
+  display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 12px;border-radius:var(--radius);
+  background:var(--glass);border:1px solid var(--border);color:var(--text);text-decoration:none;
+  cursor:pointer;transition:transform .25s ease, background .25s ease, box-shadow .25s ease;text-align:center;
+}
+.action:hover{transform:translateY(-4px);background:var(--glass-strong);box-shadow:0 14px 30px rgba(0,0,0,0.35);}
+.action .ic{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;}
+.action span{font-size:13.5px;font-weight:600;color:var(--text-soft);}
+.ic-coral{background:linear-gradient(135deg,var(--coral),var(--coral-deep));}
+.ic-blue{background:linear-gradient(135deg,var(--blue),#3B63C4);}
+.ic-teal{background:linear-gradient(135deg,var(--teal),#1EA987);}
+.ic-gold{background:linear-gradient(135deg,var(--gold),#E09A1A);}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px;align-items:start;}
+@media (max-width:940px){.grid{grid-template-columns:1fr;}}
+.col{display:flex;flex-direction:column;gap:22px;}
+
+.card{
+  background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;
+  backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+  box-shadow:0 1px 0 rgba(255,255,255,0.06) inset, 0 20px 50px rgba(0,0,0,0.25);
+  scroll-margin-top:90px;
+}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.card-head .ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;}
+.card-head h2{font-size:17px;font-weight:700;}
+.card p.desc{font-size:13.5px;color:var(--text-soft);line-height:1.55;margin-bottom:18px;}
+
+/* FORM */
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+.field select,.field textarea,.field input{
+  width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:14px;
+  padding:13px 16px;font-family:'Inter',sans-serif;font-size:15px;color:var(--text);outline:none;
+  transition:border-color .2s, box-shadow .2s; appearance:none;
+}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23A8AFC0' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 16px center;padding-right:38px;}
+.field select option{background:#1B2333;color:var(--text);}
+.field textarea{min-height:96px;resize:vertical;}
+.field select::placeholder,.field textarea::placeholder,.field input::placeholder{color:var(--text-dim);}
+.field select:focus,.field textarea:focus,.field input:focus{border-color:var(--coral);box-shadow:0 0 0 4px rgba(255,122,89,0.14);}
+.field input[type=date]{color-scheme:dark;}
+
+.tipos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.tipo-btn{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:13px 10px;
+  cursor:pointer;text-align:center;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--text-soft);
+  transition:all .2s ease;
+}
+.tipo-btn span{display:block;font-size:20px;margin-bottom:5px;}
+.tipo-btn.sel{background:rgba(255,122,89,0.14);border-color:rgba(255,122,89,0.5);color:#FFC9AE;}
+
+.btn{
+  width:100%;border:none;border-radius:16px;padding:16px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:transform .18s ease, box-shadow .18s ease;color:#0B0D12;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:scale(0.98);}
+.btn-coral{background:linear-gradient(135deg,var(--coral),var(--pink));color:#fff;box-shadow:0 10px 26px rgba(255,90,120,0.28);}
+.btn-blue{background:linear-gradient(135deg,var(--blue),#3B63C4);color:#fff;box-shadow:0 10px 26px rgba(91,141,239,0.25);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#E09A1A);color:#241A05;box-shadow:0 10px 26px rgba(246,185,59,0.22);}
+
+.tips{font-size:13.5px;color:var(--text-soft);line-height:2;}
+.tips b{color:#FFC9AE;font-weight:600;}
+
+/* LOCATION */
+.geo-ok{background:rgba(47,217,168,0.10);border:1px solid rgba(47,217,168,0.28);border-radius:16px;padding:16px;margin-bottom:14px;}
+.geo-ok .titulo{font-size:14px;font-weight:700;color:#7BEBC9;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.geo-ok .fecha{font-size:13px;color:var(--text-soft);}
+.geo-warn{background:rgba(246,185,59,0.10);border:1px solid rgba(246,185,59,0.28);border-radius:16px;padding:16px;font-size:14px;color:#F6D89E;font-weight:600;margin-bottom:14px;}
+.geo-link{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--teal),#1EA987);
+  color:#06231A;border-radius:14px;padding:14px;text-align:center;font-weight:700;font-size:14.5px;text-decoration:none;margin-bottom:12px;
+  transition:transform .18s ease;}
+.geo-link:hover{transform:translateY(-2px);}
+.geo-info{background:rgba(255,255,255,0.04);border:1px solid var(--border-soft);border-radius:14px;padding:14px;font-size:13px;color:var(--text-soft);line-height:1.6;}
+
+/* SUMMARY / AGENDA LISTS */
+.resumen-item{background:rgba(255,255,255,0.035);border:1px solid var(--border-soft);border-left:3px solid var(--coral);
+  border-radius:14px;padding:14px 16px;margin-bottom:10px;}
+.resumen-item .fecha{font-size:11px;color:var(--text-dim);font-weight:700;margin-bottom:5px;letter-spacing:.3px;}
+.resumen-item .texto{font-size:14px;color:var(--text);line-height:1.55;}
+.resumen-item .emocion{font-size:12px;color:var(--teal);font-weight:600;margin-top:6px;}
+
+.agenda-item{background:rgba(255,255,255,0.035);border:1px solid var(--border-soft);border-left:3px solid var(--gold);
+  border-radius:14px;padding:13px 16px;margin-bottom:10px;display:flex;align-items:center;gap:13px;}
+.agenda-item .ico{font-size:24px;flex:none;}
+.agenda-item .info{flex:1;min-width:0;}
+.agenda-item .titulo{font-size:14.5px;font-weight:700;color:var(--text);}
+.agenda-item .det{font-size:12.5px;color:var(--text-soft);margin-top:2px;}
+.agenda-item .del-btn{background:none;border:none;font-size:17px;cursor:pointer;color:var(--text-dim);flex:none;transition:color .2s;}
+.agenda-item .del-btn:hover{color:var(--pink);}
+
+.empty{text-align:center;color:var(--text-dim);padding:28px 10px;font-size:14px;line-height:1.6;}
+
+/* FOOTER STRIP */
+.foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px;}
+@media (max-width:760px){.foot-grid{grid-template-columns:1fr;}}
+.family-strip{display:flex;align-items:center;gap:14px;}
+.avatars{display:flex;}
+.avatar{
+  width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#fff;border:2px solid rgba(17,24,39,0.9);margin-left:-10px;
+}
+.avatar:first-child{margin-left:0;}
+.foot-text small{color:var(--text-dim);font-size:12.5px;}
+.foot-text .t{font-weight:700;font-size:14.5px;}
+
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(20,22,30,0.92);backdrop-filter:blur(18px);color:#fff;border:1px solid var(--border);
+  border-radius:100px;padding:13px 26px;font-size:14.5px;font-weight:600;z-index:300;opacity:0;
+  transition:opacity .3s ease, transform .3s ease;pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="hdr">
-    <div class="logo">💌</div>
-    <h1>Portal Familiar</h1>
-    <p>Conectados con la <strong>Tata Mercedes</strong> a través de Hanna 💕</p>
-  </div>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
 
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('mensaje',this)">✏️ Mensaje</button>
-    <button class="tab" onclick="switchTab('ubicacion',this)">📍 Ubicación</button>
-    <button class="tab" onclick="switchTab('resumen',this)">🧠 Hanna hoy</button>
-    <button class="tab" onclick="switchTab('agenda',this)">📅 Agenda</button>
+<nav>
+  <div class="brand">
+    <svg class="heart" viewBox="0 0 32 32" fill="none"><path d="M16 27s-10-6.2-13-12.4C1 9.8 4 5 9 5c3 0 5.3 1.7 7 4.3C17.7 6.7 20 5 23 5c5 0 8 4.8 6 9.6C26 20.8 16 27 16 27z" fill="url(#g1)"/><defs><linearGradient id="g1" x1="1" y1="5" x2="29" y2="27"><stop stop-color="#FF7A59"/><stop offset="1" stop-color="#FF5C8A"/></linearGradient></defs></svg>
+    <div>HANNA<small>Nieta Virtual · Portal Familiar</small></div>
   </div>
+  <div class="navlinks">
+    <a href="#inicio">Inicio</a>
+    <a href="#mensaje">Mensaje</a>
+    <a href="#ubicacion">Ubicación</a>
+    <a href="#hanna-hoy">Hanna hoy</a>
+    <a href="#agenda">Agenda</a>
+  </div>
+  <div class="nav-right">
+    <div class="bell"><span class="dot"></span><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 9a6 6 0 1112 0c0 4 1.5 5.5 1.5 5.5H4.5S6 13 6 9z" stroke="#D8DCE8" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 19a2 2 0 004 0" stroke="#D8DCE8" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+    <div class="nav-avatar"><img src="hanna-avatar.png" alt="Hanna"></div>
+  </div>
+</nav>
 
-  <!-- MENSAJE -->
-  <div class="panel show" id="panel-mensaje">
-    <div class="card">
-      <h2>✏️ Dejar un mensaje para Hanna</h2>
-      <p style="margin-bottom:16px">Hanna lee estos mensajes antes de charlar con la Tata y los usa para conocerla mejor cada día.</p>
-      <div class="field">
-        <label>¿Quién escribe?</label>
-        <select id="fQuien">
-          <option value="">— Seleccioná tu nombre —</option>
-          <option>Rodrigo (tu hijo)</option>
-          <option>Sara (tu hija)</option>
-          <option>Gusi (tu hija)</option>
-          <option>Diego / Tutu (tu yerno)</option>
-          <option>Viki (tu nieta)</option>
-          <option>Lula (tu nieta)</option>
-          <option>Rulos / Valentina (tu nieta)</option>
-          <option>More / Morena (tu nieta)</option>
-          <option>Manu (tu nieto)</option>
-        </select>
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div>
+      <div class="hero-eyebrow">💕 Conectados con la Tata Mercedes</div>
+      <h1>¡Hola, <span class="accent">familia</span>!<br>Bienvenidos al Portal de Hanna.</h1>
+      <p class="lead">Un espacio para acompañar a la Tata a la distancia: contale novedades a Hanna, mirá dónde está y enterate cómo estuvo su día.</p>
+      <div class="quote-card">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-9.7-9.3C.7 7.9 3 4 7 4c2.4 0 4.2 1.3 5 3.1C12.8 5.3 14.6 4 17 4c4 0 6.3 3.9 4.7 7.7C19.5 16.4 12 21 12 21z" fill="#FF9271"/></svg>
+        <p><strong>La tecnología nos acerca,</strong><br>el amor nos mantiene unidos.</p>
       </div>
-      <div class="field">
-        <label>Tipo de mensaje</label>
-        <div class="tipos">
-          <button class="tipo-btn sel" data-tipo="novedad" onclick="selTipo(this)"><span>📰</span>Novedad del día</button>
-          <button class="tipo-btn" data-tipo="salud" onclick="selTipo(this)"><span>🌿</span>Salud / Estado</button>
-          <button class="tipo-btn" data-tipo="recuerdo" onclick="selTipo(this)"><span>📸</span>Recuerdo</button>
-          <button class="tipo-btn" data-tipo="cariño" onclick="selTipo(this)"><span>💕</span>Cariño</button>
-          <button class="tipo-btn" data-tipo="gustos" onclick="selTipo(this)"><span>🎵</span>Gustos / Temas</button>
-          <button class="tipo-btn" data-tipo="dato" onclick="selTipo(this)"><span>💡</span>Dato para Hanna</button>
+    </div>
+    <div class="hero-visual">
+      <div class="photo-frame" style="--hero-photo:url('hero-photo.jpg')">
+        <div class="glow-orb" style="width:220px;height:220px;background:radial-gradient(circle,rgba(255,122,89,0.25),transparent 70%);left:5%;top:5%;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK ACTIONS -->
+  <div class="actions">
+    <a class="action" href="#mensaje">
+      <div class="ic ic-coral"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v13H7l-3 3V4z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <span>Enviar mensaje</span>
+    </a>
+    <a class="action" href="#ubicacion">
+      <div class="ic ic-blue"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-12a7 7 0 10-14 0c0 5.9 7 12 7 12z" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="9" r="2.4" stroke="#fff" stroke-width="1.8"/></svg></div>
+      <span>Ver ubicación</span>
+    </a>
+    <a class="action" href="#hanna-hoy">
+      <div class="nav-avatar" style="width:42px;height:42px;"><img src="hanna-avatar.png" alt="Hanna"></div>
+      <span>Hanna hoy</span>
+    </a>
+    <a class="action" href="#agenda">
+      <div class="ic ic-gold"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#fff" stroke-width="1.8"/><path d="M4 9h16M8 3v4M16 3v4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <span>Ver agenda</span>
+    </a>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid">
+    <div class="col">
+
+      <!-- MENSAJE -->
+      <div class="card" id="mensaje">
+        <div class="card-head">
+          <div class="ic ic-coral"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v13H7l-3 3V4z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+          <h2>Dejar un mensaje para Hanna</h2>
         </div>
+        <p class="desc">Hanna lee estos mensajes antes de charlar con la Tata y los usa para conocerla mejor cada día.</p>
+        <div class="field">
+          <label>¿Quién escribe?</label>
+          <select id="fQuien">
+            <option value="">— Seleccioná tu nombre —</option>
+            <option>Rodrigo (tu hijo)</option>
+            <option>Sara (tu hija)</option>
+            <option>Gusi (tu hija)</option>
+            <option>Diego / Tutu (tu yerno)</option>
+            <option>Viki (tu nieta)</option>
+            <option>Lula (tu nieta)</option>
+            <option>Rulos / Valentina (tu nieta)</option>
+            <option>More / Morena (tu nieta)</option>
+            <option>Manu (tu nieto)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tipo de mensaje</label>
+          <div class="tipos">
+            <button class="tipo-btn sel" data-tipo="novedad" onclick="selTipo(this)"><span>📰</span>Novedad del día</button>
+            <button class="tipo-btn" data-tipo="salud" onclick="selTipo(this)"><span>🌿</span>Salud / Estado</button>
+            <button class="tipo-btn" data-tipo="recuerdo" onclick="selTipo(this)"><span>📸</span>Recuerdo</button>
+            <button class="tipo-btn" data-tipo="cariño" onclick="selTipo(this)"><span>💕</span>Cariño</button>
+            <button class="tipo-btn" data-tipo="gustos" onclick="selTipo(this)"><span>🎵</span>Gustos / Temas</button>
+            <button class="tipo-btn" data-tipo="dato" onclick="selTipo(this)"><span>💡</span>Dato para Hanna</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Tu mensaje</label>
+          <textarea id="fTexto" placeholder="Ej: Hoy mamá estuvo con buen humor, salió a caminar al parque. Le gustó mucho la visita de Viki ayer."></textarea>
+        </div>
+        <button class="btn btn-coral" onclick="guardarMensaje()">Enviar a Hanna</button>
       </div>
-      <div class="field">
-        <label>Tu mensaje</label>
-        <textarea id="fTexto" placeholder="Ej: Hoy mamá estuvo con buen humor, salió a caminar al parque. Le gustó mucho la visita de Viki ayer."></textarea>
+
+      <!-- IDEAS -->
+      <div class="card">
+        <div class="card-head">
+          <div class="ic ic-blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a5 5 0 015 5c0 2-1 3-1 5v2H8v-2c0-2-1-3-1-5a5 5 0 015-5z" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <h2>Ideas de qué escribir</h2>
+        </div>
+        <p class="tips">
+          <b>✓</b> "Hoy mamá estuvo con buen humor, hizo empanadas"<br>
+          <b>✓</b> "Le encanta que la llamen a las 10 de la mañana"<br>
+          <b>✓</b> "Esta semana no fue a natación, estaba resfriada"<br>
+          <b>✓</b> "Se acuerda perfectamente de sus nietas"<br>
+          <b>✓</b> "Le gusta la canción Merceditas del chamamé"<br>
+          <b>✓</b> "Hoy la vi triste, extraña al abuelo"
+        </p>
       </div>
-      <button class="btn btn-rose" onclick="guardarMensaje()">💾 Enviar a Hanna</button>
+
+      <!-- HANNA HOY -->
+      <div class="card" id="hanna-hoy">
+        <div class="card-head">
+          <div class="nav-avatar" style="width:38px;height:38px;"><img src="hanna-avatar.png" alt="Hanna"></div>
+          <h2>¿Cómo estuvo la Tata?</h2>
+        </div>
+        <p class="desc">Hanna guarda un resumen de cada conversación para aprender y recordar.</p>
+        <div id="resumenContent"><div class="empty">Cargando…</div></div>
+      </div>
+
     </div>
-    <div class="card" style="background:#F0F9FF;">
-      <h2 style="color:var(--teal)">💡 Ideas de qué escribir</h2>
-      <p>
-        ✅ "Hoy mamá estuvo con buen humor, hizo empanadas"<br>
-        ✅ "Le encanta que la llamen a las 10 de la mañana"<br>
-        ✅ "Esta semana no fue a natación, estaba resfriada"<br>
-        ✅ "Se acuerda perfectamente de sus nietas"<br>
-        ✅ "Le gusta la canción Merceditas del chamamé"<br>
-        ✅ "Hoy la vi triste, extraña al abuelo"
-      </p>
+
+    <div class="col">
+
+      <!-- UBICACION -->
+      <div class="card" id="ubicacion">
+        <div class="card-head">
+          <div class="ic ic-blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-12a7 7 0 10-14 0c0 5.9 7 12 7 12z" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="9" r="2.4" stroke="#fff" stroke-width="1.8"/></svg></div>
+          <h2>¿Dónde está la Tata?</h2>
+        </div>
+        <div id="geoContent"><div class="geo-warn">⏳ Cargando ubicación…</div></div>
+        <button class="btn btn-blue" onclick="cargarUbicacion()">Actualizar ubicación</button>
+      </div>
+
+      <!-- AGENDA -->
+      <div class="card" id="agenda">
+        <div class="card-head">
+          <div class="ic ic-gold"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#fff" stroke-width="1.8"/><path d="M4 9h16M8 3v4M16 3v4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <h2>Agenda de la Tata</h2>
+        </div>
+        <p class="desc">Hanna le recuerda estos eventos a la Tata en la conversación del día.</p>
+        <div class="field">
+          <label>Tipo de recordatorio</label>
+          <select id="agendaTipo">
+            <option value="medico">🏥 Turno médico</option>
+            <option value="cumple">🎂 Cumpleaños</option>
+            <option value="visita">👨‍👩‍👧 Visita familiar</option>
+            <option value="medicacion">💊 Medicación</option>
+            <option value="actividad">🏊 Actividad (natación, tai chi)</option>
+            <option value="otro">📌 Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Descripción</label>
+          <input type="text" id="agendaTexto" placeholder="Ej: Turno con el cardiólogo a las 10hs">
+        </div>
+        <div class="field">
+          <label>Fecha</label>
+          <input type="date" id="agendaFecha">
+        </div>
+        <button class="btn btn-gold" onclick="guardarAgenda()" style="margin-bottom:20px">Agregar recordatorio</button>
+        <div id="agendaContent"><div class="empty">Cargando…</div></div>
+      </div>
+
     </div>
   </div>
 
-  <!-- UBICACIÓN -->
-  <div class="panel" id="panel-ubicacion">
-    <div class="card">
-      <h2>📍 ¿Dónde está la Tata?</h2>
-      <div id="geoContent"><div class="geo-warn">⏳ Cargando ubicación…</div></div>
-      <button class="btn btn-blue" onclick="cargarUbicacion()" style="margin-top:12px">🔄 Actualizar</button>
+  <!-- FOOTER -->
+  <div class="foot-grid">
+    <div class="card family-strip">
+      <div class="avatars">
+        <div class="avatar" style="background:#FF7A59;">RF</div>
+        <div class="avatar" style="background:#5B8DEF;">SA</div>
+        <div class="avatar" style="background:#2FD9A8;">GU</div>
+        <div class="avatar" style="background:#F6B93B;">DT</div>
+        <div class="avatar" style="background:#FF5C8A;">+5</div>
+      </div>
+      <div class="foot-text">
+        <div class="t">La familia conectada</div>
+        <small>El amor no entiende de distancias.</small>
+      </div>
     </div>
-    <div class="card" style="background:var(--warm);">
-      <p>📡 La ubicación se actualiza automáticamente cuando la Tata usa Hanna. También puede compartirla manualmente desde la app.</p>
+    <div class="card family-strip">
+      <div class="ic ic-blue" style="width:44px;height:44px;border-radius:14px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 18h.01M9.1 9a3 3 0 015.8 1c0 2-3 2-3 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="1.8"/></svg></div>
+      <div class="foot-text">
+        <div class="t">¿Necesitás ayuda?</div>
+        <small>Estamos para ayudarte en lo que necesites.</small>
+      </div>
     </div>
   </div>
 
-  <!-- RESUMEN -->
-  <div class="panel" id="panel-resumen">
-    <div class="card">
-      <h2>🧠 ¿Cómo estuvo la Tata?</h2>
-      <p style="margin-bottom:16px">Hanna guarda un resumen de cada conversación para aprender y recordar.</p>
-      <div id="resumenContent"><div class="empty">Cargando…</div></div>
-    </div>
-  </div>
-
-  <!-- AGENDA -->
-  <div class="panel" id="panel-agenda">
-    <div class="card">
-      <h2>📅 Agenda de la Tata</h2>
-      <p style="margin-bottom:16px">Hanna le recuerda estos eventos a la Tata en la conversación del día.</p>
-      <div class="field">
-        <label>Tipo de recordatorio</label>
-        <select id="agendaTipo">
-          <option value="medico">🏥 Turno médico</option>
-          <option value="cumple">🎂 Cumpleaños</option>
-          <option value="visita">👨‍👩‍👧 Visita familiar</option>
-          <option value="medicacion">💊 Medicación</option>
-          <option value="actividad">🏊 Actividad (natación, tai chi)</option>
-          <option value="otro">📌 Otro</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Descripción</label>
-        <input type="text" id="agendaTexto" placeholder="Ej: Turno con el cardiólogo a las 10hs">
-      </div>
-      <div class="field">
-        <label>Fecha</label>
-        <input type="date" id="agendaFecha">
-      </div>
-      <button class="btn btn-gold" onclick="guardarAgenda()" style="margin-bottom:20px">📅 Agregar recordatorio</button>
-      <div id="agendaContent"><div class="empty">Cargando…</div></div>
-    </div>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -186,16 +433,6 @@ const SUPABASE_URL = 'https://tddrewgssppdhxgkgzxf.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-';
 const HEADERS = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' };
 let tipoSel = 'novedad';
-
-function switchTab(id, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
-  btn.classList.add('active');
-  document.getElementById('panel-' + id).classList.add('show');
-  if (id === 'ubicacion') cargarUbicacion();
-  if (id === 'resumen') cargarResumen();
-  if (id === 'agenda') cargarAgenda();
-}
 
 function selTipo(btn) {
   document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('sel'));
@@ -241,7 +478,7 @@ async function cargarUbicacion() {
     el.innerHTML = `
       <div class="geo-ok">
         <div class="titulo">✅ Última ubicación registrada</div>
-        <div class="fecha">📅 ${fecha}</div>
+        <div class="fecha">${fecha}</div>
       </div>
       <a class="geo-link" href="${loc.url}" target="_blank">🗺️ Ver en Google Maps</a>
       <div class="geo-info">💡 Si la Tata se movió, pedile que abra Hanna o que toque "Compartir ubicación" en la app.</div>
@@ -262,7 +499,7 @@ async function cargarResumen() {
     el.innerHTML = data.map(c => {
       const fecha = new Date(c.fecha).toLocaleString('es-AR');
       return `<div class="resumen-item">
-        <div class="fecha">📅 ${fecha}</div>
+        <div class="fecha">${fecha}</div>
         <div class="texto">${c.resumen || 'Sin resumen'}</div>
         ${c.emociones ? `<div class="emocion">Estado: ${c.emociones}</div>` : ''}
       </div>`;
@@ -303,7 +540,7 @@ async function cargarAgenda() {
         <div class="ico">${iconos[a.tipo]||'📌'}</div>
         <div class="info">
           <div class="titulo">${a.texto}</div>
-          <div class="det">📅 ${new Date(a.fecha+'T00:00:00').toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})}</div>
+          <div class="det">${new Date(a.fecha+'T00:00:00').toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})}</div>
         </div>
         <button class="del-btn" onclick="borrarAgenda('${a.id}')">🗑️</button>
       </div>`).join('');
@@ -316,6 +553,11 @@ async function borrarAgenda(id) {
   toast('🗑️ Eliminado');
   cargarAgenda();
 }
+
+// carga inicial de todo (ya no hay tabs: se ve todo el dashboard)
+cargarUbicacion();
+cargarResumen();
+cargarAgenda();
 </script>
 </body>
 </html>
