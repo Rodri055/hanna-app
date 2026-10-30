@@ -793,6 +793,43 @@ function renderMemories(){
 // ═══════════════════════════════
 //  GEOLOCALIZACIÓN
 // ═══════════════════════════════
+const SB_URL = 'https://tddrewgssppdhxgkgzxf.supabase.co';
+const SB_KEY = 'sb_publishable_3oCWOyWJZM75SA5Ujre-eg_XcorlLx-';
+const SB_HEADERS = { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' };
+
+// Guarda la ubicación en Supabase (tabla ubicacion_tata) para que el portal familiar la vea
+async function guardarUbicacionRemota(lat, lon, mapsUrl){
+  const ts = new Date().toISOString();
+  const intentos = [
+    { lat: Number(lat), lon: Number(lon), url: mapsUrl, ts },
+    { url: mapsUrl, ts }
+  ];
+  for (const body of intentos){
+    try{
+      const r = await fetch(`${SB_URL}/rest/v1/ubicacion_tata`, { method:'POST', headers:SB_HEADERS, body:JSON.stringify(body) });
+      if (r.ok) return true;
+      console.warn('ubicacion_tata insert falló', r.status, await r.text());
+    }catch(e){ console.warn('ubicacion_tata error de red', e); }
+  }
+  return false;
+}
+
+// Registro automático y silencioso (sin mensajes ni voz)
+function registrarUbicacionAuto(){
+  if(!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      const lat=pos.coords.latitude.toFixed(6);
+      const lon=pos.coords.longitude.toFixed(6);
+      guardarUbicacionRemota(lat, lon, `https://www.google.com/maps?q=${lat},${lon}`);
+    },
+    ()=>{},
+    {enableHighAccuracy:true,timeout:15000,maximumAge:60000}
+  );
+}
+window.addEventListener('load',()=>{ setTimeout(registrarUbicacionAuto,3000); });
+setInterval(registrarUbicacionAuto, 5*60*1000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) registrarUbicacionAuto(); });
 function shareLocation(){
   const status=document.getElementById('geoStatus');
   const coords=document.getElementById('geoCoords');
@@ -816,6 +853,7 @@ function shareLocation(){
       link.href=mapsUrl;
       // Guardar en localStorage para que los hijos puedan verlo
       localStorage.setItem('tata_location',JSON.stringify({lat,lon,url:mapsUrl,ts:new Date().toISOString()}));
+      guardarUbicacionRemota(lat, lon, mapsUrl).then(ok=>{ if(!ok){ status.className='geo-status err'; status.textContent='⚠️ No se pudo enviar a la familia. Revisá internet.'; } });
       speak('¡Listo Tata! Ya pueden verte en el mapa. 📍');
       toast('✅ Ubicación compartida con tu familia');
     },
